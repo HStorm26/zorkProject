@@ -7,6 +7,9 @@ class SaveCommand extends Command {
         this.saveFilename = (command);
     }
     String execute() {
+        if(saveFilename.equals("")){
+            return "Please enter a save name.\n";
+        }
         try {
             GameState.instance().store(saveFilename);
             return "Data saved to " +
