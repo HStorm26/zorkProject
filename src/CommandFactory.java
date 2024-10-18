@@ -1,7 +1,7 @@
 
 public class CommandFactory {
 
-    private static CommandFactory theInstance;
+    private static CommandFactory theInstance = null;
 
     public static synchronized CommandFactory instance() {
         if (theInstance == null) {

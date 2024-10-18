@@ -37,7 +37,7 @@ public class GameState {
 
         Scanner s = new Scanner(new FileReader(filename));
 
-        if (!s.nextLine().equals("Zork II save data")) {
+        if (!s.nextLine().equals("Zork III save data")) {
             throw new IllegalSaveFormatException("Save file not compatible.");
         }
 
