@@ -17,6 +17,7 @@ public class Dungeon {
     private String title;
     private Room entry;
     private Hashtable<String,Room> rooms;
+    private Hashtable<String,Item> items;
     private String filename;
 
     Dungeon(String title, Room entry) {
@@ -34,6 +35,7 @@ public class Dungeon {
         IllegalDungeonFormatException {
 
         this.rooms = new Hashtable<String,Room>();
+        this.items = new Hashtable<String,Item>();
         this.filename = filename;
 
         Scanner s = new Scanner(new FileReader(filename));
@@ -56,7 +58,7 @@ public class Dungeon {
             while (true) {
                 add(new Item(s));
             }
-        } catch (Item.NoItemException e) { /* end of items */ }
+        } catch (NoItemException e) { /* end of items */ }
 
         // Throw away Rooms starter.
         if (!s.nextLine().equals("Rooms:")) {
@@ -101,7 +103,20 @@ public class Dungeon {
 
     public String getFilename() { return this.filename; }
 
+    public Item getItem(String itemName) {
+        for (String name : items.keySet()) {
+            if(items.get(name).goesBy(itemName)){
+                return items.get(name);
+            }
+        }
+        return null;
+        //go through every item's aliases
+        //return the right item
+    }
+
     public void add(Room room) { this.rooms.put(room.getName(), room); }
+
+    public void add(Item item) { this.items.put(item.getPrimaryName(), item); }
 
     public Room getRoom(String roomName) {
         return this.rooms.get(roomName); 

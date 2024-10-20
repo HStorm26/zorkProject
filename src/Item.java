@@ -1,65 +1,80 @@
 import java.util.Hashtable;
 import java.util.HashSet;
 import java.util.Scanner;
-public class Item {
+public class Item{
 
-    class NoItemException extends Exception {}
 
-    private String primaryName;
-    private int weight;
-    private Hashtable<String,String> messages = new Hashtable<>();
-    private HashSet<String> aliases = new HashSet<>();
+   private String primaryName;
+   private int weight;
+   private Hashtable<String,String> messages;
+   private HashSet<String> aliases;
 
-    public Item(Scanner s) {
-        String name = s.nextLine();
-        if (name.equals("===")) {
-            throw new NoItemException();
-        }
+   public Item(Scanner s) throws NoItemException{
+       this.aliases = new HashSet<String>();
+       this.messages = new Hashtable<String,String>();
+       String next = s.nextLine().strip(); 
+       if(next.equals("Items:")){
+           next = s.nextLine();
 
-        String[] names = name.split(",");
-        String[] actions = new String[2];
-        primaryName = names[0];
-        for(int i=0; i<names.length; i++) {
-            aliases.put(names[i]);
-        }
-        weight = s.nextInt();
-        s.nextLine(); //moves to the next line so I don't have to bother casting
-        String action = s.nextLine();
-        while(!action.equals("---")) {
-            actions = action.split(":");
-            messages.put(actions[0], actions[1]);
-            action = s.nextLine();
-        }
+       }
+       if(!next.equals("===")){
 
-    }
 
-    public boolean goesBy(String name) {
-        if(aliases.contains(name)){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+           String[] splits = next.split(",");
 
-    public String getPrimaryName() {
+           this.primaryName=splits[0];
+
+           for(int i = 0; i<splits.length;i++){
+               this.aliases.add(splits[i]);
+           }
+
+           next=s.nextLine();
+
+           this.weight = Integer.parseInt(next);
+           next = s.nextLine();
+     
+           while(!next.equals("---")){
+               int colon = next.indexOf(":");
+               String verb = next.substring(0,colon);
+     
+               String mssg = next.substring(colon + 1);
+               this.messages.put(verb,mssg);
+
+               next = s.nextLine();
+           }
+       }
+
+       else{
+           throw new NoItemException();
+       }
+   }
+   public boolean goesBy(String name){
+       if(this.aliases.contains(name)){
+           return true;
+       }
+
+       return false;
+
+   }
+
+   public String getPrimaryName(){
+       return this.primaryName;
+   }
+
+   public String getMessageForVerb(String verb){
+       if(this.messages.containsKey(verb)){
+           return this.messages.get(verb);
+       }
+       else {
+           return "You can't " + verb + " the " + primaryName;
+       }
+   }
+
+   public String toString(){
         return primaryName;
-    }
-    
-    public String getMessageForVerb(String verb) {
-        if(messages.contains(verb)){
-            return messages.get(verb);
-        }
-        else{
-            return "you can't " + verb + " the " + primaryName;
-        }
-    }
+   }
 
-    public String toString() {
-        return primaryName;
-    }
-
-    public int getWeight() {
-        return weight;
-    }
+   public int getWeight(){
+       return this.weight;
+   }
 }
