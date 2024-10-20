@@ -46,6 +46,17 @@ public class Dungeon {
             throw new IllegalDungeonFormatException(
                 "No '===' after version indicator.");
         }
+        // Throw away Items starter.
+        if (!s.nextLine().equals("Items:")) {
+            throw new IllegalDungeonFormatException(
+                "No 'Items:' line where expected.");
+        }
+
+        try {
+            while (true) {
+                add(new Item(s));
+            }
+        } catch (Item.NoItemException e) { /* end of items */ }
 
         // Throw away Rooms starter.
         if (!s.nextLine().equals("Rooms:")) {

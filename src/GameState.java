@@ -44,9 +44,7 @@ public class GameState {
         String dungeonFileLine = s.nextLine();
 
         if (!dungeonFileLine.startsWith("Dungeon file: ")) {
-            throw new IllegalSaveFormatException("No '" +
-                "Dungeon file: " + 
-                "' after version indicator.");
+            throw new IllegalSaveFormatException("No 'Dungeon file:' after version indicator.");
         }
 
         dungeon = new Dungeon(dungeonFileLine.substring(

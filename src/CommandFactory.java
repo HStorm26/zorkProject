@@ -15,19 +15,29 @@ public class CommandFactory{
 
     public Command parse(String command) {
         String[] commands = command.split(" ");
-        //this should probably be a switch case
-        if (commands[0].equals("n") || commands[0].equals("s") ||
-            commands[0].equals("e") || commands[0].equals("w") ||
-            commands[0].equals("u") || commands[0].equals("d") ){
-            return new MovementCommand(command);
-        }
+        String c = commands[0];
+        switch(c) {
+            case "n":
+            case "s":
+            case "e":
+            case "w":
+            case "u":
+            case "d":
+                return new MovementCommand(c);
         //save needs to check for an argument
-        else if (commands[0].equals("save")) {
-            return new SaveCommand(checkForArgs(commands));
-        }
+            case "save":
+                return new SaveCommand(checkForArgs(commands));
+//don't uncomment this code until Look and Inventory are probably implemented. 
+/*
+        //look does not need any arguments
+            case "look":
+                return new LookCommand();
+            case "i":
+                return new InventoryCommand();
+*/
         //default case
-        else {
-            return new UnknownCommand(commands[0]);
+            default:
+                return new UnknownCommand(c);
         }
     }
     //checks if a command that needs an argument has an argument passed to it.
