@@ -50,21 +50,6 @@ public class Item{
             throw new NoItemException();
         }
    }
-
-   public static void main (String args[]){
-        try{
-        Scanner stdin = new Scanner(new FileReader("thing.zork"));
-  try{
-            while(true){
-        Item box = new Item(stdin);
-            }
-          
-        }
-  catch(NoItemException e){
-        }
-        }
-        catch (Exception e){}
-        }
    public boolean goesBy(String name){
        if(this.aliases.contains(name)){
            return true;
