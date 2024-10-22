@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-
+import java.util.Enumeration;
 public class GameState {
 
     public static class IllegalSaveFormatException extends Exception {
@@ -58,74 +58,95 @@ public class GameState {
                          "Dungeon file: ".length()));
 
              s.nextLine();   // throw away "Room states:"
-             String visitedRoomName = s.nextLine();
-             while (!visitedRoomName.equals("===")) {
-                 this.visitedRooms.add(dungeon.getRoom(visitedRoomName));
+             String next = s.nextLine();
+             while (!next.equals("===")) {
+                
 
-                 s.nextLine(); //throw away beenhere=true;
+                    String beenHere =s.nextLine();
+                    if(beenHere.endsWith("true")){
+                         this.visitedRooms.add(dungeon.getRoom(next));
+                    }
 
-               /*find t or f for visited and if contents add to that room
-       
-              if(s.nextLine().endsWith("true"){
-                   this.visitedRooms.add(visitedRoomName);
-                   }
-                   String contents = s.nextLine();
-
-
-
+                String contents = s.nextLine();
+                roomContents= new Hashtable<Room,HashSet<Item>>();
                  //restore item that was in room at save-time 
                  if(contents.startsWith("Contents:")){
-                    roomContents = new Hashtable<Room,HashSet<Item>>();
-                    contents = contents.substring("Contents: " + contents.length());
-                    String[] roomContentSplit = contents.split();
+                   
+                    contents = contents.substring("Contents: " .length());
+                    String[] roomContentSplit = contents.split(",");
+                    if(roomContentSplit.length>0){
                     for(int i =0; i<roomContentSplit.length;i++){
+                       Item roomItem = dungeon.getItem(roomContentSplit[i]);
+                       this.addItemToRoom(roomItem,dungeon.getRoom(next));         
 
-                       // this.addItemToRoom(Room room,Item item)
+                 }
+               
+               }
+             }
 
-                 }*/
-
-                 s.nextLine();   // throw away "---"
+                 s.nextLine();  // throw away "---"
               
              }
              
-            // s.nextLine(); //throw away "Adventurer:"
+             s.nextLine(); //throw away "Adventurer:"
              String currentRoomLine = s.nextLine();
              adventurersCurrentRoom = dungeon.getRoom(
                      currentRoomLine.substring("Current room: ".length()));
-             /*new inventory to current room 
+             //new inventory to current room 
+
              inventory = new ArrayList<Item>();
+
              String roomInventory = s.nextLine();
+
              int colon = roomInventory.indexOf(":");
              String newInventory = roomInventory.substring(colon);
              String[] inventoryItems = newInventory.split(",");
-             for(int i = 0;i<inventoryItems;i++){
+             for(int i = 0;i<inventoryItems.length;i++){
                 this.addToInventory(dungeon.getItem(inventoryItems[i].strip()));
-             }*/
+             }
 
          }
 
     void store(String saveName) throws IOException {
         String filename = this.getFullSaveName(saveName);
         PrintWriter w = new PrintWriter(new FileWriter(filename));
-        w.println("Zork II save data");
+        w.println("Zork III save data");
         w.println("Dungeon file: " + this.getDungeon().getFilename());
         w.println("Room states:");
+
+
+        
         Iterator<Room> visitedRoomsIter = this.visitedRooms.iterator();
-        while (visitedRoomsIter.hasNext()) {
+        while (visitedRoomsIter.hasNext()){
             Room visitedRoom = visitedRoomsIter.next();
             w.println(visitedRoom.getName());
             w.println("beenHere=true");
-            w.println("---");
+         
+        Enumeration e = this.roomContents.keys();
+        
+            String contents = "Contents: ";
+
+            if(this.roomContents.get(visitedRoom).size()>0){
+            for(Item item: this.roomContents.get(visitedRoom)){
+                contents += item.getPrimaryName() + ",";
+            }
+            }
+            w.println(contents);
+
         }
+            w.println("---");
+        
+
+        
         w.println("===");
         w.println("Current room: " + this.getAdventurersCurrentRoom().getName());
-       /*w.println("Adventurer:");
+       w.println("Adventurer:");
         w.println("Current room: " +
                 this.getAdventurersCurrentRoom().getName());
         w.print("Inventory: ");
         for(Item item: inventory){
             w.print(item.getPrimaryName() + ",");
-        }*/
+        }
         w.close();
     }
 
