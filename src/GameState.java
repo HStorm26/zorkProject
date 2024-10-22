@@ -80,9 +80,13 @@ public class GameState {
                        this.addItemToRoom(roomItem,dungeon.getRoom(next));         
 
                  }
+
                
                }
              }
+                 else{
+                     this.addItemToRoom(null,dungeon.getRoom(next));
+                 }
 
                  s.nextLine();  // throw away "---"
               
@@ -121,9 +125,7 @@ public class GameState {
             Room visitedRoom = visitedRoomsIter.next();
             w.println(visitedRoom.getName());
             w.println("beenHere=true");
-         
-        Enumeration e = this.roomContents.keys();
-        
+     
             String contents = "Contents: ";
 
             if(this.roomContents.get(visitedRoom).size()>0){
@@ -143,9 +145,11 @@ public class GameState {
        w.println("Adventurer:");
         w.println("Current room: " +
                 this.getAdventurersCurrentRoom().getName());
+        if(this.inventory.size()>0){
         w.print("Inventory: ");
         for(Item item: inventory){
             w.print(item.getPrimaryName() + ",");
+        }
         }
         w.close();
     }
