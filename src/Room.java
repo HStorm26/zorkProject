@@ -1,8 +1,8 @@
-
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashSet;
 
 public class Room {
 
@@ -70,5 +70,27 @@ public class Room {
 
     void addExit(Exit exit) {
         this.exits.add(exit);
+    }
+    //still needs doing
+    HashSet<Item> getContents() {
+        return GameState.instance().getItemsInRoom(this);
+    }
+
+    Item getItemNamed(String itemName) {
+        HashSet<Item> items = this.getContents();
+        for(Item item : items) {
+            if(item.goesBy(itemName)){
+                return GameState.instance().getDungeon().getItem(item.getPrimaryName());
+            }
+        }
+        return null;
+    }
+
+    void add(Item item) {
+        GameState.instance().addItemToRoom(item, this);
+    }
+
+    void remove(Item item) {
+        GameState.instance().removeItemFromRoom(item, this);
     }
 }

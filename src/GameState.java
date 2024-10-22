@@ -103,7 +103,7 @@ public class GameState {
              String roomInventory = s.nextLine();
 
              int colon = roomInventory.indexOf(":");
-             String newInventory = roomInventory.substring(colon);
+             String newInventory = roomInventory.substring(colon + 1);
              String[] inventoryItems = newInventory.split(",");
              for(int i = 0;i<inventoryItems.length;i++){
                 this.addToInventory(dungeon.getItem(inventoryItems[i].strip()));
