@@ -1,4 +1,6 @@
-
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Iterator;
 import java.util.HashSet;
@@ -21,6 +23,11 @@ public class GameState {
     private Room adventurersCurrentRoom;
     private HashSet<Room> visitedRooms;
 
+    //new for Zork III
+    private ArrayList<Item> inventory;
+    private Hashtable<Room, HashSet<Item>> roomContents;
+
+
     static synchronized GameState instance() {
         if (theInstance == null) {
             theInstance = new GameState();
@@ -33,35 +40,69 @@ public class GameState {
     }
 
     void restore(String filename) throws FileNotFoundException,
-        IllegalSaveFormatException, Dungeon.IllegalDungeonFormatException {
+         IllegalSaveFormatException, Dungeon.IllegalDungeonFormatException {
 
-        Scanner s = new Scanner(new FileReader(filename));
+             Scanner s = new Scanner(new FileReader(filename));
 
-        if (!s.nextLine().equals("Zork III save data")) {
-            throw new IllegalSaveFormatException("Save file not compatible.");
-        }
+             if (!s.nextLine().equals("Zork III save data")) {
+                 throw new IllegalSaveFormatException("Save file not compatible.");
+             }
 
-        String dungeonFileLine = s.nextLine();
+             String dungeonFileLine = s.nextLine();
 
-        if (!dungeonFileLine.startsWith("Dungeon file: ")) {
-            throw new IllegalSaveFormatException("No 'Dungeon file:' after version indicator.");
-        }
+             if (!dungeonFileLine.startsWith("Dungeon file: ")) {
+                 throw new IllegalSaveFormatException("No 'Dungeon file:' after version indicator.");
+             }
 
-        dungeon = new Dungeon(dungeonFileLine.substring(
-            "Dungeon file: ".length()));
+             dungeon = new Dungeon(dungeonFileLine.substring(
+                         "Dungeon file: ".length()));
 
-        s.nextLine();   // throw away "Room states:"
-        String visitedRoomName = s.nextLine();
-        while (!visitedRoomName.equals("===")) {
-            this.visitedRooms.add(dungeon.getRoom(visitedRoomName));
-            s.nextLine();   // throw away "beenHere=true"
-            s.nextLine();   // throw away "---"
-            visitedRoomName = s.nextLine();
-        }
-        String currentRoomLine = s.nextLine();
-        adventurersCurrentRoom = dungeon.getRoom(
-            currentRoomLine.substring("Current room: ".length()));
-    }
+             s.nextLine();   // throw away "Room states:"
+             String visitedRoomName = s.nextLine();
+             while (!visitedRoomName.equals("===")) {
+                 this.visitedRooms.add(dungeon.getRoom(visitedRoomName));
+
+                 s.nextLine(); //throw away beenhere=true;
+
+               /*find t or f for visited and if contents add to that room
+       
+              if(s.nextLine().endsWith("true"){
+                   this.visitedRooms.add(visitedRoomName);
+                   }
+                   String contents = s.nextLine();
+
+
+
+                 //restore item that was in room at save-time 
+                 if(contents.startsWith("Contents:")){
+                    roomContents = new Hashtable<Room,HashSet<Item>>();
+                    contents = contents.substring("Contents: " + contents.length());
+                    String[] roomContentSplit = contents.split();
+                    for(int i =0; i<roomContentSplit.length;i++){
+
+                       // this.addItemToRoom(Room room,Item item)
+
+                 }*/
+
+                 s.nextLine();   // throw away "---"
+              
+             }
+             
+            // s.nextLine(); //throw away "Adventurer:"
+             String currentRoomLine = s.nextLine();
+             adventurersCurrentRoom = dungeon.getRoom(
+                     currentRoomLine.substring("Current room: ".length()));
+             /*new inventory to current room 
+             inventory = new ArrayList<Item>();
+             String roomInventory = s.nextLine();
+             int colon = roomInventory.indexOf(":");
+             String newInventory = roomInventory.substring(colon);
+             String[] inventoryItems = newInventory.split(",");
+             for(int i = 0;i<inventoryItems;i++){
+                this.addToInventory(dungeon.getItem(inventoryItems[i].strip()));
+             }*/
+
+         }
 
     void store(String saveName) throws IOException {
         String filename = this.getFullSaveName(saveName);
@@ -77,8 +118,14 @@ public class GameState {
             w.println("---");
         }
         w.println("===");
+        w.println("Current room: " + this.getAdventurersCurrentRoom().getName());
+       /*w.println("Adventurer:");
         w.println("Current room: " +
-            this.getAdventurersCurrentRoom().getName());
+                this.getAdventurersCurrentRoom().getName());
+        w.print("Inventory: ");
+        for(Item item: inventory){
+            w.print(item.getPrimaryName() + ",");
+        }*/
         w.close();
     }
 
@@ -116,4 +163,69 @@ public class GameState {
     void visit(Room r) {
         this.visitedRooms.add(r);
     }
+
+    ArrayList<Item> getInventory(){
+        return this.inventory;
+    }
+
+    void addToInventory(Item item){
+        this.inventory.add(item);
+    }
+
+    void removeFromInventory(Item item){
+        this.inventory.remove(item);
+    }
+
+    Item getItemInVicinityNamed(String name)throws NoItemException{
+        Item result = null;
+        for(Item item: this.roomContents.get(this.adventurersCurrentRoom)){
+            if(item.getPrimaryName().equals(name)){
+               result = item;
+            }
+        }
+        if(result ==null){
+        for(int i = 0; i<inventory.size();i++){
+            if(inventory.get(i).getPrimaryName().equals(name)){
+                result = inventory.get(i);
+            }
+
+        }
+       }
+        if(result ==null){
+            throw new NoItemException();
+      
+        }
+       return result;
+
+    }
+
+    Item getItemFromInventoryNamed(String name)throws NoItemException{
+         Item result = null;
+        for(int i = 0; i<inventory.size();i++){
+            if(inventory.get(i).getPrimaryName().equals(name)){
+                result = inventory.get(i);
+            }
+            else if(i==inventory.size()-1){
+                throw new NoItemException();
+
+
+            }
+        }
+        return result;
+
+
+    }
+    HashSet<Item> getItemsInRoom(Room room){
+        return this.roomContents.get(room);
+    }
+
+    void addItemToRoom(Item item,Room room){
+        this.roomContents.get(room).add(item);
+    }
+    void removeItemFromRoom(Item item,Room room){
+        this.roomContents.get(room).remove(item);
+
+   }
+
+
 }
