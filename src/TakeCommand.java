@@ -20,7 +20,7 @@ class TakeCommand extends Command {
         for(int i=0; i<inventory.size(); i++){
             totalWeight += inventory.get(i).getWeight();
         }        
-        if(itemName.equals("all")){
+        if(itemName.equals("all") && !currentRoom.getContents().isEmpty()){
             String bigHaul = "";
             Iterator<Item> iterator = GameState.instance().getItemsInRoom(currentRoom).iterator();
             while(iterator.hasNext()){
@@ -36,6 +36,9 @@ class TakeCommand extends Command {
                 }
             }
             return bigHaul;
+        }
+        else if(currentRoom.getContents().isEmpty()){
+            return "There's nothing to take!\n";
         }
         if (item == null) {
             return "There is no " + itemName + " here.\n";

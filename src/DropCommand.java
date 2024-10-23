@@ -12,7 +12,7 @@ public class DropCommand extends Command {
             if(itemName.equals("")){ return "drop what?"; }
             Room currentRoom = GameState.instance().getAdventurersCurrentRoom();
             ArrayList<Item> inventory= GameState.instance().getInventory();
-            if(itemName.equals("all")){
+            if(itemName.equals("all") && !inventory.isEmpty()){
                 String bigDesc = "";
                 while(!inventory.isEmpty()){
                    GameState.instance().addItemToRoom(inventory.get(0), currentRoom);
@@ -20,6 +20,9 @@ public class DropCommand extends Command {
                    inventory.remove(0);
                 }
                 return bigDesc;
+            }
+            else if(inventory.isEmpty()){
+                return "You're not carrying anything!\n";
             }
             Item item = GameState.instance().getItemFromInventoryNamed(itemName);
             
