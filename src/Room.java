@@ -1,6 +1,6 @@
-import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.HashSet;
 
 public class Room {
     public static class NoRoomException extends Exception {}
@@ -8,17 +8,14 @@ public class Room {
     private String name;
     private String desc;
     private ArrayList<Exit> exits;
-    private HashSet<Item> items;
 
     public Room(String name) {
         this.name = name;
         this.exits = new ArrayList<>();
-        this.items = new HashSet<>();
     }
 
     public Room(Scanner s) throws NoRoomException, Dungeon.IllegalDungeonFormatException {
         this.exits = new ArrayList<>();
-        this.items = new HashSet<>();
         name = s.nextLine();
         desc = "";
         if (name.equals("===")) {
@@ -26,6 +23,13 @@ public class Room {
         }
 
         String lineOfDesc = s.nextLine();
+        if(lineOfDesc.startsWith("Contents: ")){
+            String[] items = lineOfDesc.substring("Contents: ".length()).split(",");
+            for(int i=0; i<items.length; i++){
+                this.add(GameState.instance().getDungeon().getItem(items[i]));
+                lineOfDesc = s.nextLine();
+            }
+        }
         while (!lineOfDesc.equals("---") && !lineOfDesc.equals("===")) {
             desc += lineOfDesc + "\n";
             lineOfDesc = s.nextLine();
@@ -46,16 +50,20 @@ public class Room {
 
     public String describe() {
         String description;
+        HashSet<Item> items = this.getContents();
         if (GameState.instance().hasBeenVisited(this)) {
             description = this.name;
         } else {
             description = this.name + "\n" + this.desc + "\n";
         }
+        for (Item item : items) {
+            description +="\nThere is a " + item + " here.";
+        }
         for (Exit exit : this.exits) {
             description += "\n" + exit.describe();
         }
         GameState.instance().visit(this);
-        return description;
+        return description + "\n";
     }
 
     public Room leaveBy(String dir) {

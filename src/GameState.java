@@ -51,7 +51,7 @@ public class GameState {
         }
 
         dungeon = new Dungeon(dungeonFileLine.substring("Dungeon file: ".length()));
-
+        this.dungeon = dungeon;
         s.nextLine(); // throw away "Room states:"
         String next = s.nextLine();
         while (!next.equals("===")) {
@@ -149,6 +149,10 @@ public class GameState {
 
     Dungeon getDungeon() {
         return dungeon;
+    }
+
+    void setDungeon(Dungeon dungeon){
+        this.dungeon = dungeon;
     }
 
     boolean hasBeenVisited(Room r) {

@@ -31,7 +31,7 @@ public class Dungeon {
 
         Scanner s = new Scanner(new FileReader(filename));
         title = s.nextLine();
-
+        GameState.instance().setDungeon(this);
         s.nextLine(); // Throw away version indicator.
         if (!s.nextLine().equals("===")) {
             throw new IllegalDungeonFormatException("No '===' after version indicator.");
