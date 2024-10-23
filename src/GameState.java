@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.FileWriter;
+import java.util.Iterator;
 
 public class GameState {
     public static class IllegalSaveFormatException extends Exception {
@@ -53,30 +54,36 @@ public class GameState {
         this.dungeon = dungeon;
         s.nextLine(); // throw away "Room states:"
         String next = s.nextLine();
+        next = next.substring(0, next.indexOf(":"));
         while (!next.equals("===")) {
             String beenHere = s.nextLine();
             if (beenHere.endsWith("true")) {
                 this.visitedRooms.add(dungeon.getRoom(next));
             }
-
             String contents = s.nextLine();
-            roomContents = new Hashtable<Room, HashSet<Item>>();
             // Restore item that was in room at save-time 
             if (contents.startsWith("Contents:")) {
+                //puts items where they belong according to the save file.
                 contents = contents.substring("Contents: ".length());
-                String[] roomContentSplit = contents.split(",");
-                if (roomContentSplit.length > 0) {
-                    for (String itemName : roomContentSplit) {
-                        Item roomItem = dungeon.getItem(itemName.strip());
-                        this.addItemToRoom(roomItem, dungeon.getRoom(next));
+                String[] roomItems = contents.split(",");
+                for(int i=0; i<roomItems.length; i++){
+                    if(roomItems[i].isEmpty()){
+                        break;
                     }
+                    GameState.instance().addItemToRoom(
+                    GameState.instance().getDungeon().getItem(roomItems[i]),
+                    GameState.instance().getDungeon().getRoom(next));
                 }
-            } else {
-                this.addItemToRoom(null, dungeon.getRoom(next));
-            }
+                //removes items from the requisite locations.
+                
+                
 
-            s.nextLine(); // throw away "---"
+                s.nextLine(); //throw away "---"
+            }
             next = s.nextLine();
+            if(!next.equals("===")){
+                next = next.substring(0, next.indexOf(":"));
+            }
         }
 
         s.nextLine(); // Throw away "Adventurer:"
@@ -85,7 +92,7 @@ public class GameState {
 
         // New inventory to current room 
         inventory = new ArrayList<Item>();
-
+        try {
         String roomInventory = s.nextLine();
         int colon = roomInventory.indexOf(":");
         String newInventory = roomInventory.substring(colon + 1);
@@ -93,9 +100,13 @@ public class GameState {
         for (String inventoryItem : inventoryItems) {
             this.addToInventory(dungeon.getItem(inventoryItem.strip()));
         }
+        } catch (Exception e) {
+            
+        }
     }
 
     void store(String saveName) throws IOException {
+
         String filename = this.getFullSaveName(saveName);
         PrintWriter w = new PrintWriter(new FileWriter(filename));
         w.println("Zork III save data");
@@ -103,12 +114,18 @@ public class GameState {
         w.println("Room states:");
 
         for (Room visitedRoom : this.visitedRooms) {
-            w.println(visitedRoom.getName());
+            w.println(visitedRoom.getName() + ":");
             w.println("beenHere=true");
-            w.println("Contents: ");
-            for (Item item : this.roomContents.get(visitedRoom)) {
-                w.print(item.getPrimaryName() + ",");
+            w.print("Contents: ");
+            Iterator<Item> iterator = this.roomContents.get(visitedRoom).iterator();
+            while(iterator.hasNext()){
+                Item item = iterator.next();
+                w.print(item.getPrimaryName());
+                if(iterator.hasNext()){
+                    w.print(",");
+                }
             }
+            w.print("\n");
             w.println("---");
         }
 
@@ -213,8 +230,8 @@ public class GameState {
     }
 
     void addItemToRoom(Item item, Room room) {
-        if (!roomContents.containsKey(room)) {
-            roomContents.put(room, new HashSet<Item>());
+        if (!this.roomContents.containsKey(room)) {
+            this.roomContents.put(room, new HashSet<Item>());
         }
         this.roomContents.get(room).add(item);
     }
