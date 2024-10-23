@@ -1,5 +1,4 @@
-
-public class CommandFactory{
+public class CommandFactory {
 
     private static CommandFactory theInstance = null;
 
@@ -14,9 +13,13 @@ public class CommandFactory{
     }
 
     public Command parse(String command) {
+        // Trim the command to remove any trailing or leading spaces or characters
+        command = command.trim();
+
         String[] commands = command.split(" ");
         String c = commands[0];
-        switch(c) {
+
+        switch (c) {
             case "n":
             case "s":
             case "e":
@@ -24,30 +27,35 @@ public class CommandFactory{
             case "u":
             case "d":
                 return new MovementCommand(c);
-        //save needs to check for an argument
+
             case "save":
                 return new SaveCommand(checkForArgs(commands));
-//don't uncomment this code until Look and Inventory are probably implemented. 
-/*
-        //look does not need any arguments
+
+            case "take":
+                return new TakeCommand(checkForArgs(commands));
+
+            case "drop":
+                return new DropCommand(checkForArgs(commands));
+
             case "look":
                 return new LookCommand();
+
             case "i":
                 return new InventoryCommand();
-*/
-        //default case
+
+            case "use":
+                return new ItemSpecificCommand(checkForArgs(commands), commands.length > 2 ? commands[2] : "");
+
             default:
                 return new UnknownCommand(c);
         }
     }
-    //checks if a command that needs an argument has an argument passed to it.
-    //each command subclass that needs an argument will have a case for "" being passed.
-    private static String checkForArgs(String[] commands){
-        if(commands.length < 2){
+
+    private static String checkForArgs(String[] commands) {
+        if (commands.length < 2) {
             return "";
-        }
-        else{
-            return commands[1];
+        } else {
+            return commands[1].trim(); // Trim the argument to remove spaces
         }
     }
 }

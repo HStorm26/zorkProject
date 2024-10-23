@@ -1,8 +1,6 @@
-
 import java.util.Scanner;
 
 public class Exit {
-
     class NoExitException extends Exception {}
 
     private String dir;
@@ -15,9 +13,7 @@ public class Exit {
         src.addExit(this);
     }
 
-    Exit(Scanner s, Dungeon d) throws NoExitException,
-        Dungeon.IllegalDungeonFormatException {
-
+    Exit(Scanner s, Dungeon d) throws NoExitException, Dungeon.IllegalDungeonFormatException {
         String srcTitle = s.nextLine();
         if (srcTitle.equals("===")) {
             throw new NoExitException();
@@ -25,14 +21,13 @@ public class Exit {
         this.src = d.getRoom(srcTitle);
         this.dir = s.nextLine();
         this.dest = d.getRoom(s.nextLine());
-        
-        // I'm an Exit object. Add me as an exit to my source Room.
+
+        // Add this exit to the source room.
         this.src.addExit(this);
 
-        // throw away delimiter
+        // Throw away delimiter
         if (!s.nextLine().equals("---")) {
-            throw new Dungeon.IllegalDungeonFormatException(
-                "No '---' after exit.");
+            throw new Dungeon.IllegalDungeonFormatException("No '---' after exit.");
         }
     }
 
@@ -40,7 +35,15 @@ public class Exit {
         return "You can go " + this.dir + " to " + this.dest.getName() + ".";
     }
 
-    String getDir() { return this.dir; }
-    Room getSrc() { return this.src; }
-    Room getDest() { return this.dest; }
+    String getDir() {
+        return this.dir;
+    }
+
+    Room getSrc() {
+        return this.src;
+    }
+
+    Room getDest() {
+        return this.dest;
+    }
 }

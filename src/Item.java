@@ -1,80 +1,76 @@
 import java.util.Hashtable;
 import java.util.HashSet;
 import java.util.Scanner;
-public class Item{
 
+public class Item {
 
-   private String primaryName;
-   private int weight;
-   private Hashtable<String,String> messages;
-   private HashSet<String> aliases;
+    private String primaryName;
+    private int weight;
+    private Hashtable<String, String> messages;
+    private HashSet<String> aliases;
 
-   public Item(Scanner s) throws NoItemException{
-       this.aliases = new HashSet<String>();
-       this.messages = new Hashtable<String,String>();
-       String next = s.nextLine().strip(); 
-       if(next.equals("Items:")){
-           next = s.nextLine();
+    public Item(Scanner s) throws NoItemException {
+        this.aliases = new HashSet<>();
+        this.messages = new Hashtable<>();
+        String next = s.nextLine().strip();
+        if (next.equals("Items:")) {
+            next = s.nextLine();
+        }
+        if (!next.equals("===")) {
+            String[] splits = next.split(",");
+            this.primaryName = splits[0];
 
-       }
-       if(!next.equals("===")){
+            for (String split : splits) {
+                this.aliases.add(split.toLowerCase());
+            }
 
+            next = s.nextLine();
+            this.weight = Integer.parseInt(next);
+            next = s.nextLine();
 
-           String[] splits = next.split(",");
+            while (!next.equals("---")) {
+                int colon = next.indexOf(":");
+                String verb = next.substring(0, colon);
+                String mssg = next.substring(colon + 1);
+                this.messages.put(verb, mssg);
+                next = s.nextLine();
+            }
+        } else {
+            throw new NoItemException();
+        }
+    }
 
-           this.primaryName=splits[0];
+    // Simple constructor for testing purposes
+    public Item(String primaryName, int weight) {
+        this.primaryName = primaryName;
+        this.weight = weight;
+        this.aliases = new HashSet<>();
+        this.aliases.add(primaryName.toLowerCase());  // Add primary name as alias
+        this.messages = new Hashtable<>();
+    }
 
-           for(int i = 0; i<splits.length;i++){
-               this.aliases.add(splits[i]);
-           }
+    public boolean goesBy(String name) {
+        return this.aliases.contains(name.toLowerCase());
+    }
 
-           next=s.nextLine();
+    public String getPrimaryName() {
+        return this.primaryName;
+    }
 
-           this.weight = Integer.parseInt(next);
-           next = s.nextLine();
-     
-           while(!next.equals("---")){
-               int colon = next.indexOf(":");
-               String verb = next.substring(0,colon);
-     
-               String mssg = next.substring(colon + 1);
-               this.messages.put(verb,mssg);
+    public String getAliases() {
+        return this.aliases.toString(); // Debugging: return aliases as a string
+    }
 
-               next = s.nextLine();
-           }
-       }
+    public String getMessageForVerb(String verb) {
+        return this.messages.getOrDefault(verb, "You can't " + verb + " the " + primaryName);
+    }
 
-       else{
-           throw new NoItemException();
-       }
-   }
-   public boolean goesBy(String name){
-       if(this.aliases.contains(name)){
-           return true;
-       }
+    public int getWeight() {
+        return this.weight;
+    }
 
-       return false;
-
-   }
-
-   public String getPrimaryName(){
-       return this.primaryName;
-   }
-
-   public String getMessageForVerb(String verb){
-       if(this.messages.containsKey(verb)){
-           return this.messages.get(verb);
-       }
-       else {
-           return "You can't " + verb + " the " + primaryName;
-       }
-   }
-
-   public String toString(){
+    @Override
+    public String toString() {
         return primaryName;
-   }
-
-   public int getWeight(){
-       return this.weight;
-   }
+    }
 }

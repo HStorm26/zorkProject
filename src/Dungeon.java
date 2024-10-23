@@ -1,13 +1,12 @@
-
 import java.util.Hashtable;
 import java.util.Scanner;
-import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.io.FileWriter;
 
 public class Dungeon {
-
     public static class IllegalDungeonFormatException extends Exception {
         public IllegalDungeonFormatException(String e) {
             super(e);
@@ -16,56 +15,46 @@ public class Dungeon {
 
     private String title;
     private Room entry;
-    private Hashtable<String,Room> rooms;
-    private Hashtable<String,Item> items;
-    private String filename;
+    private Hashtable<String, Room> rooms;
+    private Hashtable<String, Item> items;
 
     Dungeon(String title, Room entry) {
-        this.filename = null;    // null indicates not hydrated from file.
         this.title = title;
         this.entry = entry;
-        this.rooms = new Hashtable<String,Room>();
+        this.rooms = new Hashtable<>();
+        this.items = new Hashtable<>();
     }
 
-    /**
-     * Read from the .zork filename passed, and instantiate a Dungeon object
-     * based on it.
-     */
-    public Dungeon(String filename) throws FileNotFoundException,
-        IllegalDungeonFormatException {
-
-        this.rooms = new Hashtable<String,Room>();
-        this.items = new Hashtable<String,Item>();
-        this.filename = filename;
+    public Dungeon(String filename) throws FileNotFoundException, IllegalDungeonFormatException {
+        this.rooms = new Hashtable<>();
+        this.items = new Hashtable<>();
 
         Scanner s = new Scanner(new FileReader(filename));
         title = s.nextLine();
 
-        s.nextLine();   // Throw away version indicator.
-
-        // Throw away delimiter.
+        s.nextLine(); // Throw away version indicator.
         if (!s.nextLine().equals("===")) {
-            throw new IllegalDungeonFormatException(
-                "No '===' after version indicator.");
+            throw new IllegalDungeonFormatException("No '===' after version indicator.");
         }
-        // Throw away Items starter.
+
+        // Items section
         if (!s.nextLine().equals("Items:")) {
-            throw new IllegalDungeonFormatException(
-                "No 'Items:' line where expected.");
+            throw new IllegalDungeonFormatException("No 'Items:' line where expected.");
         }
 
         try {
             while (true) {
-                add(new Item(s));
+                Item newItem = new Item(s);
+                add(newItem);
             }
-        } catch (NoItemException e) { /* end of items */ }
-
-        // Throw away Rooms starter.
-        if (!s.nextLine().equals("Rooms:")) {
-            throw new IllegalDungeonFormatException(
-                "No 'Rooms:' line where expected.");
+        } catch (NoItemException e) {
+            // End of items
         }
 
+        // Rooms section
+        if (!s.nextLine().equals("Rooms:")) {
+            throw new IllegalDungeonFormatException("No 'Rooms:' line where expected.");
+        }
 
         try {
             // Instantiate and add first room (the entry).
@@ -76,49 +65,47 @@ public class Dungeon {
             while (true) {
                 add(new Room(s));
             }
-        } catch (Room.NoRoomException e) {  /* end of rooms */ }
+        } catch (Room.NoRoomException e) {
+            // End of rooms
+        }
 
-        // Throw away Exits starter.
+        // Exits section
         if (!s.nextLine().equals("Exits:")) {
-            throw new IllegalDungeonFormatException(
-                "No 'Exits:' line where expected.");
+            throw new IllegalDungeonFormatException("No 'Exits:' line where expected.");
         }
 
         try {
-            // Instantiate exits.
             while (true) {
-                // (Note that the Exit constructor takes care of adding itself
-                // to its source room.)
-                Exit exit = new Exit(s, this);
+                new Exit(s, this);
             }
-        } catch (Exit.NoExitException e) {  /* end of exits */ }
+        } catch (Exit.NoExitException e) {
+            // End of exits
+        }
 
         s.close();
     }
-    
 
-    public Room getEntry() { return this.entry; }
-
-    public String getTitle() { return this.title; }
-
-    public String getFilename() { return this.filename; }
-
-    public Item getItem(String itemName) {
-        for (String name : items.keySet()) {
-            if(items.get(name).goesBy(itemName)){
-                return items.get(name);
-            }
-        }
-        return null;
-        //go through every item's aliases
-        //return the right item
+    public Room getEntry() {
+        return this.entry;
     }
 
-    public void add(Room room) { this.rooms.put(room.getName(), room); }
+    public String getTitle() {
+        return this.title;
+    }
 
-    public void add(Item item) { this.items.put(item.getPrimaryName(), item); }
+    public Item getItem(String itemName) {
+        return items.get(itemName);
+    }
+
+    public void add(Room room) {
+        this.rooms.put(room.getName(), room);
+    }
+
+    public void add(Item item) {
+        this.items.put(item.getPrimaryName(), item);
+    }
 
     public Room getRoom(String roomName) {
-        return this.rooms.get(roomName); 
+        return this.rooms.get(roomName);
     }
 }

@@ -1,23 +1,23 @@
-//Command for saving files
-import java.util.Scanner;
+import java.io.IOException;
+
 class SaveCommand extends Command {
     private String saveFilename;
-    
-    SaveCommand(String command) {
-        this.saveFilename = (command);
+
+    public SaveCommand(String saveFilename) {
+        this.saveFilename = saveFilename;
     }
-    String execute() {
-        if(saveFilename.equals("")){
+
+    @Override
+    public String execute() {
+        if (saveFilename.isEmpty()) {
             return "Please enter a save name.\n";
         }
+
         try {
             GameState.instance().store(saveFilename);
-            return "Data saved to " +
-                GameState.instance().getFullSaveName(saveFilename) + ".\n";
-        } catch (Exception e) {
-            System.err.println("Couldn't save!");
-            e.printStackTrace();
-            return "";
+            return "Data saved to " + saveFilename + ".\n";
+        } catch (IOException e) {
+            return "Save failed.\n";
         }
     }
 }
