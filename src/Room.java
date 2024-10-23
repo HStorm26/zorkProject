@@ -48,21 +48,35 @@ public class Room {
         this.desc = desc;
     }
 
-    public String describe() {
+    // Called when entering the room
+    public String describeOnEntry() {
         String description;
         HashSet<Item> items = this.getContents();
         if (GameState.instance().hasBeenVisited(this)) {
-            description = this.name;
+            description = this.name;  // Only show room name after the first visit
         } else {
-            description = this.name + "\n" + this.desc + "\n";
+            description = this.name + "\n" + this.desc + "\n";  // Full description on first entry
         }
         for (Item item : items) {
-            description +="\nThere is a " + item + " here.";
+            description += "\nThere is a " + item + " here.";
         }
         for (Exit exit : this.exits) {
             description += "\n" + exit.describe();
         }
-        GameState.instance().visit(this);
+        GameState.instance().visit(this);  // Mark the room as visited
+        return description + "\n";
+    }
+
+    // Called by the "look" command
+    public String describeFull() {
+        String description = this.name + "\n" + this.desc + "\n";  // Full description regardless of visit status
+        HashSet<Item> items = this.getContents();
+        for (Item item : items) {
+            description += "\nThere is a " + item + " here.";
+        }
+        for (Exit exit : this.exits) {
+            description += "\n" + exit.describe();
+        }
         return description + "\n";
     }
 
