@@ -41,6 +41,7 @@ public class CommandFactory {
                 return new LookCommand();
 
             case "i":
+            case "inventory":
                 return new InventoryCommand();
 
             case "use":

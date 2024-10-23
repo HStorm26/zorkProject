@@ -8,12 +8,13 @@ public class DropCommand extends Command {
     @Override
     public String execute() {
         try {
+            if(itemName.equals("")){ return "drop what?"; }
             Item item = GameState.instance().getItemFromInventoryNamed(itemName);
             GameState.instance().removeFromInventory(item);
             GameState.instance().addItemToRoom(item, GameState.instance().getAdventurersCurrentRoom());
-            return "You have dropped " + item.getPrimaryName() + ".";
+            return "You have dropped the " + item.getPrimaryName() + ".\n";
         } catch (NoItemException e) {
-            return "Item not found in inventory: " + itemName;
+            return "Item not found in inventory: \n" + itemName;
         }
     }
 }

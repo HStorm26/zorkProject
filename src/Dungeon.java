@@ -12,7 +12,7 @@ public class Dungeon {
             super(e);
         }
     }
-
+    private String filename;
     private String title;
     private Room entry;
     private Hashtable<String, Room> rooms;
@@ -26,10 +26,12 @@ public class Dungeon {
     }
 
     public Dungeon(String filename) throws FileNotFoundException, IllegalDungeonFormatException {
+        this.filename = filename;
         this.rooms = new Hashtable<>();
         this.items = new Hashtable<>();
-
         Scanner s = new Scanner(new FileReader(filename));
+
+        
         title = s.nextLine();
         GameState.instance().setDungeon(this);
         s.nextLine(); // Throw away version indicator.
@@ -107,5 +109,8 @@ public class Dungeon {
 
     public Room getRoom(String roomName) {
         return this.rooms.get(roomName);
+    }
+    public String getFilename() {
+        return this.filename; 
     }
 }
