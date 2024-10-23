@@ -1,6 +1,6 @@
 class LookCommand extends Command {
     @Override
     String execute() {
-        return GameState.instance().getAdventurersCurrentRoom().describe();
+        return GameState.instance().getAdventurersCurrentRoom().describeFull();  // Use describeFull() here
     }
 }
