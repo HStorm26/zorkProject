@@ -1,10 +1,8 @@
-
 import java.util.Scanner;
-
 
 public class Interpreter {
 
-    public static String USAGE_MSG = 
+    public static String USAGE_MSG =
         "Usage: Interpreter dungeonFile.zork|saveFile.sav.";
 
     public static void main(String args[]) {
@@ -20,19 +18,20 @@ public class Interpreter {
         try {
             if (args[0].endsWith(".zork")) {
                 GameState.instance().initialize(new Dungeon(args[0]));
-                System.out.println("\nWelcome to " + 
+                System.out.println("\nWelcome to " +
                     GameState.instance().getDungeon().getTitle() + "!");
             } else if (args[0].endsWith(".sav")) {
                 GameState.instance().restore(args[0]);
-                System.out.println("\nWelcome back to " + 
+                System.out.println("\nWelcome back to " +
                     GameState.instance().getDungeon().getTitle() + "!");
             } else {
                 System.err.println(USAGE_MSG);
                 System.exit(2);
             }
 
+            // Use describeOnEntry() to display the initial room description
             System.out.print("\n" +
-                GameState.instance().getAdventurersCurrentRoom().describe() +
+                GameState.instance().getAdventurersCurrentRoom().describeOnEntry() +
                 "\n");
 
             command = promptUser(commandLine);
@@ -47,8 +46,8 @@ public class Interpreter {
 
             System.out.println("Bye!");
 
-        } catch(Exception e) { 
-            e.printStackTrace(); 
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 
