@@ -44,12 +44,16 @@ public class CommandFactory {
             case "inventory":
                 return new InventoryCommand();
 
-            case "use":
-                return new ItemSpecificCommand(checkForArgs(commands), commands.length > 2 ? commands[2] : "");
-
+    
             default:
-                return new UnknownCommand(c);
-        }
+                if(!checkForArgs(commands).equals("")){
+
+                return new ItemSpecificCommand(c,checkForArgs(commands));
+                
+                }
+                else{return new UnknownCommand(c);}
+      
+    }
     }
 
     private static String checkForArgs(String[] commands) {

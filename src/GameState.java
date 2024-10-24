@@ -194,21 +194,25 @@ public class GameState {
 
     Item getItemInVicinityNamed(String name) throws NoItemException {
         Item result = null;
-        for (Item item : this.roomContents.get(this.adventurersCurrentRoom)) {
-            if (item.getPrimaryName().equals(name)) {
+   
+        HashSet<Item> hash = this.getItemsInRoom(this.adventurersCurrentRoom);
+
+        for (Item item : hash) {
+            if(item.goesBy(name)){
                 result = item;
+
             }
         }
         if (result == null) {
             for (Item item : inventory) {
-                if (item.getPrimaryName().equals(name)) {
+                if (item.goesBy(name)) {
                     result = item;
                 }
             }
         }
-        if (result == null) {
-            throw new NoItemException();
-        }
+       if (result == null) {
+         throw new NoItemException();
+       }
         return result;
     }
 

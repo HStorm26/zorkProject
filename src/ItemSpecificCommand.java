@@ -8,15 +8,20 @@ public class ItemSpecificCommand extends Command {
     }
 
     @Override
-    public String execute() {
-        Room currentRoom = GameState.instance().getAdventurersCurrentRoom();
-        Item item = currentRoom.getItemNamed(noun);
+        public String execute() {
 
-        if (item == null) {
-            return "There is no " + noun + " here to " + verb + ".\n";
+            Room currentRoom = GameState.instance().getAdventurersCurrentRoom();       try{
+
+                Item item = GameState.instance().getItemInVicinityNamed(noun.strip());           
+                String actionResult = item.getMessageForVerb(verb);
+                if(actionResult==null){
+                    return "You cant " + verb + " the " + noun + ".\n";
+                }
+                return actionResult + "\n";
+            }
+
+            catch(NoItemException e){
+                return "There is no " + noun + " here to " + verb + ".\n";
+            }
         }
-
-        String actionResult = item.getMessageForVerb(verb);
-        return actionResult + "\n";
-    }
 }
