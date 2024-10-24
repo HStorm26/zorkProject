@@ -35,7 +35,6 @@ public class CommandFactory {
                 return new TakeCommand(checkForArgs(commands));
 
             case "drop":
-                System.out.println(checkForArgs(commands));
                 return new DropCommand(checkForArgs(commands));
 
             case "look":
