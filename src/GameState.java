@@ -49,7 +49,6 @@ public class GameState {
         if (!dungeonFileLine.startsWith("Dungeon file: ")) {
             throw new IllegalSaveFormatException("No 'Dungeon file:' after version indicator.");
         }
-
         dungeon = new Dungeon(dungeonFileLine.substring("Dungeon file: ".length()));
         this.dungeon = dungeon;
         s.nextLine(); // throw away "Room states:"
@@ -77,6 +76,7 @@ public class GameState {
             }
 
             s.nextLine(); // throw away "---"
+            next = s.nextLine();
         }
 
         s.nextLine(); // Throw away "Adventurer:"
@@ -99,7 +99,7 @@ public class GameState {
         String filename = this.getFullSaveName(saveName);
         PrintWriter w = new PrintWriter(new FileWriter(filename));
         w.println("Zork III save data");
-        w.println("Dungeon file: " + this.getDungeon().getTitle());
+        w.println("Dungeon file: " + this.getDungeon().getFilename());
         w.println("Room states:");
 
         for (Room visitedRoom : this.visitedRooms) {
@@ -107,14 +107,14 @@ public class GameState {
             w.println("beenHere=true");
             w.println("Contents: ");
             for (Item item : this.roomContents.get(visitedRoom)) {
-                w.println(item.getPrimaryName() + ",");
+                w.print(item.getPrimaryName() + ",");
             }
             w.println("---");
         }
 
         w.println("===");
-        w.println("Current room: " + this.getAdventurersCurrentRoom().getName());
         w.println("Adventurer:");
+        w.println("Current room: " + this.getAdventurersCurrentRoom().getName());
         if (this.inventory.size() > 0) {
             w.print("Inventory: ");
             for (Item item : inventory) {

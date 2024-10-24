@@ -11,7 +11,7 @@ public class MovementCommand extends Command {
         Room nextRoom = currentRoom.leaveBy(this.direction);
         if (nextRoom != null) {
             GameState.instance().setAdventurersCurrentRoom(nextRoom);
-            return nextRoom.describe();
+            return nextRoom.describeOnEntry();  // Use describeOnEntry() here
         } else {
             return "Sorry, you can't go " + this.direction + " from " + currentRoom.getName() + ".";
         }
