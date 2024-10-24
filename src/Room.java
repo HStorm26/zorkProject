@@ -27,8 +27,8 @@ public class Room {
             String[] items = lineOfDesc.substring("Contents: ".length()).split(",");
             for(int i=0; i<items.length; i++){
                 this.add(GameState.instance().getDungeon().getItem(items[i]));
-                lineOfDesc = s.nextLine();
             }
+            lineOfDesc = s.nextLine();
         }
         while (!lineOfDesc.equals("---") && !lineOfDesc.equals("===")) {
             desc += lineOfDesc + "\n";
