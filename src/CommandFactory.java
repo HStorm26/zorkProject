@@ -35,6 +35,7 @@ public class CommandFactory {
                 return new TakeCommand(checkForArgs(commands));
 
             case "drop":
+                System.out.println(checkForArgs(commands));
                 return new DropCommand(checkForArgs(commands));
 
             case "look":
@@ -43,12 +44,16 @@ public class CommandFactory {
             case "i":
                 return new InventoryCommand();
 
-            case "use":
-                return new ItemSpecificCommand(checkForArgs(commands), commands.length > 2 ? commands[2] : "");
-
+    
             default:
-                return new UnknownCommand(c);
-        }
+                if(!checkForArgs(commands).equals("")){
+
+                return new ItemSpecificCommand(c,checkForArgs(commands));
+                
+                }
+                else{return new UnknownCommand(c);}
+      
+    }
     }
 
     private static String checkForArgs(String[] commands) {

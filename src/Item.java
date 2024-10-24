@@ -62,7 +62,7 @@ public class Item {
     }
 
     public String getMessageForVerb(String verb) {
-        return this.messages.getOrDefault(verb, "You can't " + verb + " the " + primaryName);
+        return this.messages.get(verb);
     }
 
     public int getWeight() {
