@@ -10,7 +10,7 @@ class TakeCommand extends Command {
 
     String execute() {
         if(itemName.equals("")){
-            return "take what?";
+            return "take what?\n";
         }
         Room currentRoom = GameState.instance().getAdventurersCurrentRoom();
         Item item = currentRoom.getItemNamed(itemName);

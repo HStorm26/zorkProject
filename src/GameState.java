@@ -63,19 +63,22 @@ public class GameState {
             String contents = s.nextLine();
             // Restore item that was in room at save-time 
             if (contents.startsWith("Contents:")) {
-                //puts items where they belong according to the save file.
+                //clears the rooms if there's any data on their contents.
+                this.getItemsInRoom(this.getDungeon().getRoom(next)).clear();
                 contents = contents.substring("Contents: ".length());
                 String[] roomItems = contents.split(",");
                 for(int i=0; i<roomItems.length; i++){
                     if(roomItems[i].isEmpty()){
                         break;
                     }
-                    GameState.instance().addItemToRoom(
-                    GameState.instance().getDungeon().getItem(roomItems[i]),
-                    GameState.instance().getDungeon().getRoom(next));
+
+                    this.addItemToRoom(
+                    this.getDungeon().getItem(roomItems[i]),
+                    this.getDungeon().getRoom(next));
+                    
+                    
                 }
                 //removes items from the requisite locations.
-                
                 
 
                 s.nextLine(); //throw away "---"
@@ -93,16 +96,19 @@ public class GameState {
         // New inventory to current room 
         inventory = new ArrayList<Item>();
         try {
-        String roomInventory = s.nextLine();
-        int colon = roomInventory.indexOf(":");
-        String newInventory = roomInventory.substring(colon + 1);
-        String[] inventoryItems = newInventory.split(",");
-        for (String inventoryItem : inventoryItems) {
-            this.addToInventory(dungeon.getItem(inventoryItem.strip()));
-        }
-        } catch (Exception e) {
-            
-        }
+            String playerInventory = s.nextLine();
+            playerInventory = playerInventory.substring("Inventory: ".length());
+            String[] inventoryItems = playerInventory.split(",");
+            for (String inventoryItem : inventoryItems) {
+                this.addToInventory(dungeon.getItem(inventoryItem.strip()));
+                Iterator<Room> iterator = roomContents.keySet().iterator();
+                while(iterator.hasNext()){
+                    Room inventoryRoom = iterator.next();
+                    roomContents.get(inventoryRoom).remove(
+                     this.getDungeon().getItem(inventoryItem.strip()));
+                }
+            }
+        } catch (Exception e) {}
     }
 
     void store(String saveName) throws IOException {
@@ -133,9 +139,11 @@ public class GameState {
         w.println("Adventurer:");
         w.println("Current room: " + this.getAdventurersCurrentRoom().getName());
         if (this.inventory.size() > 0) {
-            w.print("Inventory: ");
+            String inventoryList = "Inventory: ";
             for (Item item : inventory) {
-                w.print(item.getPrimaryName() + ",");
+                inventoryList += (item.getPrimaryName() + ",");
+                inventoryList = inventoryList.substring(0, inventoryList.length());
+                w.print(inventoryList);
             }
         }
         w.close();

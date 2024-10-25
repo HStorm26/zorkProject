@@ -9,7 +9,7 @@ public class DropCommand extends Command {
     @Override
     public String execute() {
         try {
-            if(itemName.equals("")){ return "drop what?"; }
+            if(itemName.equals("")){ return "drop what?\n"; }
             Room currentRoom = GameState.instance().getAdventurersCurrentRoom();
             ArrayList<Item> inventory= GameState.instance().getInventory();
             if(itemName.equals("all") && !inventory.isEmpty()){
