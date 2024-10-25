@@ -1,0 +1,172 @@
+The Swamp
+Zork III
+===
+Items:
+anchor
+30
+throw:The anchor splashes into the swamp.
+---
+crabpot,pot,trap
+20
+sling:The crabpot slowly sinks to the bottom.
+open:A feisty crustacean is squaring up ready to pinch.
+shake:The crabs didn't sign up for this roller coaster ride!
+---
+fishingrod,rod,pole
+5
+snap:A hefty snap breaks your fishing rod in half.
+cast:Your line waves in the wind.
+extend:She's ready for a Great White now!
+---
+rope,string,line
+3
+tie:The rope now has a knot in it.
+pull:You have reached the end of the rope!
+---
+spearGun,spear,harpoon
+7
+shoot:The spear travels far.
+load:The spear is set.
+---
+seaglass,glass
+1
+examine:A pretty teal glass shard glistens in the sun.
+break:Your sea glass piece breaks into many.
+---
+lure,bait
+2
+rattle:The lure's internal beads rattle loudly.
+---
+bilgePump,pump,bilge
+5
+switch:The bilge pump starts to * gurgle *.
+submerge:Oh no! We're taking on water!
+---
+conch,shell,seaShell
+3
+hear:You're hearing breaking waves, and feel a tickle on your ear.
+touch:The conch moves...
+---
+fishingNet,net,racket
+6
+wave:You won't be catching butterflies in that one!
+---
+catfish,fish,deadFish
+8
+eat:I don't think that's a great idea.
+---
+===
+Rooms:
+Potomac Creek
+You are in a still, glass-like body of water that opens itself into a much larger river. Seagulls pass by you, seemingly floating in the wind.
+---
+Marsh
+Contents: anchor,crabpot
+It's all lilypads and bullfrogs here.
+---
+Accokeek
+Contents: lure,fishingNet
+This winding tributary brings you closer to the wilderness where fallen trees hang over the water, creating structure for the creatures below.
+---
+Crow's Nest
+You have entered a bustling ecosystem where the turtles,squirrels,fish,fawns,coyotes,lizards,ducks,turkeys, and raccoons cohabitate.
+---
+Potomac River
+Contents: bilgePump
+Howling winds against the tide create large swells to extreme for passage. As breaking waves enter your vessel, you search for calmer waters.
+---
+Aquia
+Contents: spearGun
+This place is hoppin! Tight channels, party cruises, and charters make it seem like I95.
+---
+Port Tobacco
+Contents: rope
+It's quiet here, a little too quiet.
+---
+Goose Creek
+Contents: seaglass,conch
+Vast grass flats and shallow depths allow large flocks of waterfowl to gather here as a safe haven from the treacherous conditions on the Potomac.
+---
+Machodoc
+Contents: catfish
+Shifting winds and tides corral large schools of fish here. As the sun rises,ripples flow out into the river as the bait ball makes passage.
+---
+William's Creek
+Contents: fishingrod
+Great spans of flooded timber open into a large tributary full of sea life.
+---
+===
+Exits:
+Potomac Creek
+w
+Marsh
+---
+Marsh
+e
+Potomac Creek
+---
+Potomac Creek
+n
+Accokeek
+---
+Accokeek
+s
+Potomac Creek
+---
+Crow's Nest
+e
+Accokeek
+---
+Accokeek
+w
+Crow's Nest
+---
+Potomac Creek
+e
+Potomac River
+---
+Potomac River
+w
+Potomac Creek
+---
+Potomac River
+n
+Aquia
+---
+Aquia
+s
+Potomac River
+---
+Potomac River
+e
+Port Tobacco
+---
+Port Tobacco
+w
+Potomac River
+---
+Port Tobacco
+n
+Goose Creek
+---
+Goose Creek
+s
+Port Tobacco
+---
+Potomac River
+s
+Machodoc
+---
+Machodoc
+n
+Potomac River
+---
+Machodoc
+w
+William's Creek
+---
+William's Creek
+e
+Machodoc
+---
+===
