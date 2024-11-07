@@ -1,0 +1,280 @@
+Westeros
+Zork III
+===
+Items:
+dragonglass,glass
+4
+break:Ouch! The glass cuts your hand.
+wield:There's no one here to wield it against.
+examine:It's a rough-hewn obsidian sliver, sharp as a needle.
+---
+BastardSword,sword
+25
+examine:This blade is forged from Valyrian steel, with a wolf's head pommel.
+swing:The sword is too heavy for a loser like you to swing.
+---
+dagger
+12
+examine:This sharp assassin's weapon has a dragonbone hilt.
+throw:The dagger clumsily hits the wall.
+---
+SapphireNecklace,necklace
+4
+examine:This is a dainty jeweled necklace sparkling blue.
+---
+wildfire
+2
+examine:This is a curious green liquid. You wonder what would happen if you tried to light it.
+light:The wildfire explodes in a dazzling mushroom cloud, killing you and everyone else in the world. Just kidding.
+---
+GreenDragonEgg,GreenEgg
+30
+examine:This beautiful egg is a deep green, with burnished bronze flecks that come and go depending on how you turn it.
+---
+WhiteDragonEgg,WhiteEgg
+30
+examine:This beautiful egg is pale cream, streaked with gold.
+---
+BlackDragonEgg,BlackEgg
+40
+examine:This egg is as black as midnight sea, yet alive with scarlet ripples and swirls. 
+---
+===
+Rooms:
+Winterfell
+Contents: dagger
+You stand within a huge castle complex spanning several acres, consisting of
+two massive walls and a village located just outside. Banners featuring the
+head of a direwolf are flapping in the chilly breeze.
+---
+The Wall
+Contents: BastardSword,dragonglass
+This gargantuan structure stretches for 300 miles to the west and east and is
+approximately 700 feet tall. It is made of solid ice and stone, and can be
+seen for miles round. It appears grey or blue depending on the weather and
+time of day. The top is wide enough for a dozen mounted knights to ride
+abreast and it is thicker at the base. The Wall has no gates anywhere, simply
+a few tunnels cut through it that are secured by heavy iron bars and massive
+chains that must be unlocked.
+---
+The Dreadfort
+You enter a strong fortress, with high walls and triangular merlons that look
+like sharp stone teeth. It has thick stone walls and massive towers. Its great
+hall is dim and smoky, with rows of torches grasped by skeletal human hands
+jutting from the walls. Long tables stand before a dais with a high table. The
+hall has a vaulted ceiling and wooden rafters.
+---
+Dragonstone
+This is a volcanic island at the mouth of Blackwater Bay, created by a still
+active volcano. The island is damp and dreary. A small fortress is located on
+the face of the volcano. Outside its walls sits a small fishing village on the
+stormy coast.
+---
+Pentos
+Contents: GreenDragonEgg,WhiteDragonEgg,BlackDragonEgg
+This large port city has many square brick towers. Most of the roofing is done
+in tiles. A large red temple catches the eye.
+---
+Moat Cailin
+Great blocks of black basalt lay scattered about, half sunk in the ground,
+where a great wall once stood. A wooden keep, which rotted away a thousand
+years past, and three remaining towers out of a fabled twenty are green with
+moss. 
+---
+North Kingsroad
+You are on a desolate byway that is little more than two narrow dirt tracks.
+Vultures circle overhead.
+---
+Crossroads Inn
+A large but rustic structure lies at the convergence of five roads. It is
+three stories tall with turrets and chimneys made of white stone. Its south
+wing is built upon pilings that rise over a bed of weeds. On the north side
+there is a stable with a thatch roof and a bell tower. The building is
+surrounded by a low wall of broken white stones.
+---
+South Kingsroad
+This long road stretches to the north and south as far as the eye can see.
+Numerous inns and villages lie along its path.
+---
+Mountains of the Moon
+The road you are on is wild and dangerous, climbing through rocky foothills
+and thick forests, past high passes and deep chasms. Shadowcats peer and purr
+from behind trees. Snow flurries are gathering.
+---
+Bloody Gate
+There are two long parapets built into the stone of the mountains. The pass,
+narrow where it meets the gate, is watched over by twin watchtowers, which are
+joined by a covered bridge of grey stone that arches above the road.
+---
+The Eyrie
+This breathtaking castle consists only of a cluster of seven slim, white
+towers bunched tightly together. It is made of fine white stone. The towers
+encircle a garden, which had once been meant as a godswood, but no weirwood
+heart tree would take root in the stony soil. The garden, which is overlooked
+by overhead apartments, instead contains grass, shrubbery, and statuary.
+---
+East River Road
+The deafening sounds of the Red Fork of the Trident river overwhelm you as you
+make your way along this picturesque byway.
+---
+West River Road
+You wander over a meandering road through green, hilly country.
+---
+Riverrun
+You approach a strong three-sided castle, not especially large. It is
+bordered on the north by the Tumblestone and on the south by the Red Fork,
+while on the west a third side faces a massive man-made ditch. In time of
+danger the sluice gates can be opened to fill a wide moat and leave the castle
+surrounded on all three sides by water, turning it into an island and
+leaving it practically unassailable. It commands a view of many leagues.
+The castle has sandstone walls which rise sheer from the water, its
+battlements are crenelated and have arrow loops, and its towers command the
+opposite shores.
+---
+Casterly Rock
+This fortress is carved out of a great stone colossal rock beside the Sunset
+Sea. It resembles a lion in repose at sunset. A ringfort appears on the peak,
+as well as walls, gates, and watchtowers. The base of the Rock contains large
+sea-carved caverns. The stone has been mined for thousands of years, so there
+are hundreds of mineshafts in the depths of the Rock, as well as yet untouched
+gold veins. From below the Rock thunder can be heard, where the sea comes in.
+---
+King's Landing
+Contents: wildfire,SapphireNecklace
+This extraordinary city is extremely populous, but rather unsightly and dirty
+compared to other cities. The city is roughly square-shaped, sprawling across
+several miles and defended by tall walls. Poorer smallfolk build shanty
+settlements outside the walls. The stench of the city's waste can be smelled
+for miles.
+---
+Harrenhal
+A sprawling, nearly abandoned castle has five towers of dizzying size, with
+equally monstrous curtain walls. The walls are incredibly thick and its rooms
+are built on a scale that would be more comfortable for giants than humans.
+However, much of it has far gone into decay. Only the lower thirds of two of
+the five towers appear to be occupied. Bats infest the tops of some of the
+towers.
+---
+===
+Exits:
+Winterfell
+s
+North Kingsroad
+---
+North Kingsroad
+n
+Winterfell
+---
+North Kingsroad
+s
+Crossroads Inn
+---
+Crossroads Inn
+n
+North Kingsroad
+---
+South Kingsroad
+n
+Crossroads Inn
+---
+Crossroads Inn
+s
+South Kingsroad
+---
+Mountains of the Moon
+w
+Crossroads Inn
+---
+Crossroads Inn
+e
+Mountains of the Moon
+---
+Mountains of the Moon
+e
+Bloody Gate
+---
+Bloody Gate
+w
+Mountains of the Moon
+---
+The Eyrie
+s
+Bloody Gate
+---
+Bloody Gate
+n
+The Eyrie
+---
+Crossroads Inn
+w
+East River Road
+---
+East River Road
+e
+Crossroads Inn
+---
+East River Road
+w
+Riverrun
+---
+Riverrun
+e
+East River Road
+---
+West River Road
+e
+Riverrun
+---
+Riverrun
+w
+West River Road
+---
+West River Road
+w
+Casterly Rock
+---
+Casterly Rock
+e
+West River Road
+---
+Harrenhal
+n
+South Kingsroad
+---
+South Kingsroad
+s
+Harrenhal
+---
+King's Landing
+n
+Harrenhal
+---
+Harrenhal
+s
+King's Landing
+---
+Winterfell
+n
+The Wall
+---
+The Wall
+s
+Winterfell
+---
+King's Landing
+e
+Dragonstone
+---
+Dragonstone
+w
+King's Landing
+---
+Dragonstone
+e
+Pentos
+---
+Pentos
+w
+Dragonstone
+---
+===
