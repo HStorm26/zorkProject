@@ -57,9 +57,8 @@ shoot:You launch your slingshot.
 ===
 Rooms:
 The Cavern
-Contents: poison,pizza,holocron
+Contents: poison,pizza,holocron,blaster
 Enemies: orc
 Shop: sword,water
-Weapons: blaster
 The infamous cavern filled with the most wretched fiends across the lands. Try not to touch too much.
 ---
