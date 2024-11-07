@@ -1,0 +1,23 @@
+Zork III save data
+Dungeon file:
+Room states:
+Room 1:
+beenHere=true
+Contents: ring
+Enemies: orc,sauron
+Shop Stock: cloak,sword,water  
+---
+Room 2:
+beenHere=true
+Contents: epicSword
+Enemies: ogre,gremlin
+Shop Stock: potion,mace,nunchucks
+---
+===
+Adventurer:
+Current room:
+Inventory:
+Current health:
+Current score:
+Current money:
+Equipped weapon:
