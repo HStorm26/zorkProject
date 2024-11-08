@@ -13,7 +13,7 @@ public class MovementCommand extends Command {
             GameState.instance().setAdventurersCurrentRoom(nextRoom);
             return nextRoom.describeOnEntry();  // Use describeOnEntry() here
         } else {
-            return "Sorry, you can't go " + this.direction + " from " + currentRoom.getName() + ".";
+            return "Sorry, you can't go " + this.direction + " from " + currentRoom.getName() + ".\n";
         }
     }
 }

@@ -15,8 +15,9 @@ public class ItemSpecificCommand extends Command {
                 Item item = GameState.instance().getItemInVicinityNamed(noun.strip());           
                 String actionResult = item.getMessageForVerb(verb);
                 if(actionResult==null){
-                    return "You cant " + verb + " the " + noun + ".\n";
+                    return "You can't " + verb + " the " + noun + ".\n";
                 }
+                item.executeActionsForVerb();
                 return actionResult + "\n";
             }
 

@@ -1,0 +1,12 @@
+Zork++ save data
+Dungeon file: ../files/duPont.zork
+Room states:
+Lobby:
+beenHere=true
+Contents: pin,ticket
+---
+===
+Adventurer:
+Current room: Lobby
+Current health: 10
+Current score: 35
