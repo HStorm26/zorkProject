@@ -46,7 +46,7 @@ public class GameState {
         Scanner s = new Scanner(new FileReader(filename));
 
         if (!s.nextLine().equals("Zork++ save data")) {
-            throw new IllegalSaveFormatException("Save file not compatible.");
+            throw new IllegalSaveFormatException("Version only compatible with Zork++ saves.");
         }
 
         String dungeonFileLine = s.nextLine();

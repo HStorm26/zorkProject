@@ -8,6 +8,7 @@ public class Item {
     private int weight;
     private Hashtable<String, String> messages;
     private HashSet<String> aliases;
+    private String[] actions;
 
     public Item(Scanner s) throws NoItemException {
         this.aliases = new HashSet<>();
@@ -33,6 +34,12 @@ public class Item {
                 String verb = next.substring(0, colon);
                 String mssg = next.substring(colon + 1);
                 this.messages.put(verb, mssg);
+                if(next.contains("[")){
+                    actions = next.substring((next.indexOf("[") + 1), next.indexOf("]")).split(",");
+                    for(int i=0; i<actions.length; i++){
+                        System.out.println(actions[i] + " " + i);
+                    }
+                }
                 next = s.nextLine();
             }
         } else {
