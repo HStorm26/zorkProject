@@ -20,6 +20,8 @@ public class GameState {
     private Dungeon dungeon;
     private Room adventurersCurrentRoom;
     private HashSet<Room> visitedRooms;
+    private int score;
+    private int health;
 
     // New for Zork III
     private ArrayList<Item> inventory;
@@ -36,6 +38,8 @@ public class GameState {
         this.visitedRooms = new HashSet<Room>();
         this.inventory = new ArrayList<Item>(); // Initialize the inventory here
         this.roomContents = new Hashtable<>(); // Initialize roomContents
+        this.score = 0;
+        this.health = 100;
     }
 
     void restore(String filename) throws FileNotFoundException, IllegalSaveFormatException, Dungeon.IllegalDungeonFormatException {
@@ -252,5 +256,21 @@ public class GameState {
         if (roomContents.containsKey(room)) {
             this.roomContents.get(room).remove(item);
         }
+    }
+
+    void addScore(int points){
+        this.score += points;
+    }
+    
+    int getScore(){
+        return score;
+    }
+
+    void woundPlayer(int damage){
+        health -= damage;
+    }
+
+    int getHealth(){
+        return health;
     }
 }

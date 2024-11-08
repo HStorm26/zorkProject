@@ -43,7 +43,10 @@ public class CommandFactory {
             case "i":
             case "inventory":
                 return new InventoryCommand();
-
+            case "score":
+                return new ScoreCommand();
+            case "health":
+                return new HealthCommand();
     
             default:
                 if(!checkForArgs(commands).equals("")){
