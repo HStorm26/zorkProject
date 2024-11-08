@@ -45,7 +45,7 @@ public class GameState {
     void restore(String filename) throws FileNotFoundException, IllegalSaveFormatException, Dungeon.IllegalDungeonFormatException {
         Scanner s = new Scanner(new FileReader(filename));
 
-        if (!s.nextLine().equals("Zork III save data")) {
+        if (!s.nextLine().equals("Zork++ save data")) {
             throw new IllegalSaveFormatException("Save file not compatible.");
         }
 
@@ -99,27 +99,34 @@ public class GameState {
 
         // New inventory to current room 
         inventory = new ArrayList<Item>();
-        try {
-            String playerInventory = s.nextLine();
-            playerInventory = playerInventory.substring("Inventory: ".length());
-            String[] inventoryItems = playerInventory.split(",");
-            for (String inventoryItem : inventoryItems) {
-                this.addToInventory(dungeon.getItem(inventoryItem.strip()));
-                Iterator<Room> iterator = roomContents.keySet().iterator();
-                while(iterator.hasNext()){
-                    Room inventoryRoom = iterator.next();
-                    roomContents.get(inventoryRoom).remove(
-                     this.getDungeon().getItem(inventoryItem.strip()));
+        next = s.nextLine();
+        if(next.startsWith("Inventory:")){
+            try {
+                String playerInventory = s.nextLine();
+                playerInventory = playerInventory.substring("Inventory: ".length());
+                String[] inventoryItems = playerInventory.split(",");
+                for (String inventoryItem : inventoryItems) {
+                    this.addToInventory(dungeon.getItem(inventoryItem.strip()));
+                    Iterator<Room> iterator = roomContents.keySet().iterator();
+                    while(iterator.hasNext()){
+                        Room inventoryRoom = iterator.next();
+                        roomContents.get(inventoryRoom).remove(
+                         this.getDungeon().getItem(inventoryItem.strip()));
+                    }
                 }
-            }
-        } catch (Exception e) {}
+            } catch (Exception e) {}
+            next = s.nextLine();
+        }
+        health = Integer.parseInt(next.substring("Current health: ".length()));
+        next = s.nextLine();
+        score = Integer.parseInt(next.substring("Current score: ".length()));
     }
 
     void store(String saveName) throws IOException {
 
         String filename = this.getFullSaveName(saveName);
         PrintWriter w = new PrintWriter(new FileWriter(filename));
-        w.println("Zork III save data");
+        w.println("Zork++ save data");
         w.println("Dungeon file: " + this.getDungeon().getFilename());
         w.println("Room states:");
 
@@ -150,6 +157,9 @@ public class GameState {
                 w.print(inventoryList);
             }
         }
+        w.println("Current health: " + this.health);
+        w.println("Current score: " + this.score);
+        w.flush();
         w.close();
     }
 

@@ -15,7 +15,7 @@ class HealthCommand extends Command{
             return "Your breath catches a little with each inhale. A bone or two doesn't feel quite right.\n";
         }
         else if(hp >= 10){
-            return "Your heartbeat rings in your ears and it feels like there is more blood on you tthan in you.\n";
+            return "Your heartbeat rings in your ears and it feels like there is more blood on you than in you.\n";
         }
         else{
             return "Your vision is dark around the edges. A feeling of doom has engulfed your thoughts.\n";
