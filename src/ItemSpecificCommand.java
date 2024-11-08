@@ -17,7 +17,7 @@ public class ItemSpecificCommand extends Command {
                 if(actionResult==null){
                     return "You can't " + verb + " the " + noun + ".\n";
                 }
-                item.executeActionsForVerb();
+                item.executeActionsForVerb(verb);
                 return actionResult + "\n";
             }
 

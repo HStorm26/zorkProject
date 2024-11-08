@@ -9,7 +9,7 @@ public class Item {
     private int weight;
     private Hashtable<String, String> messages;
     private HashSet<String> aliases;
-    private ArrayList<String> actions;
+    private Hashtable<String,ArrayList<String>> actions;
 
     public Item(Scanner s) throws NoItemException {
         this.aliases = new HashSet<>();
@@ -37,13 +37,15 @@ public class Item {
                 if(verb.contains("[")){
                     hasActions = true;
                     verb = verb.substring(0, verb.indexOf("["));
-                    this.actions = new ArrayList<>();
+                    this.actions = new Hashtable<>();
+                    
                 }
                 String mssg = next.substring(colon + 1);
                 this.messages.put(verb, mssg);
                 if(hasActions){
+                    actions.put(verb,new ArrayList<>());
                     String[] actionArray = next.substring((next.indexOf("[") + 1), next.indexOf("]")).split(",");
-                    actions.addAll(java.util.Arrays.asList(actionArray));
+                    actions.get(verb).addAll(java.util.Arrays.asList(actionArray));
                 }
                 next = s.nextLine();
             }
@@ -85,39 +87,59 @@ public class Item {
     public String toString() {
         return primaryName;
     }
-    public void/*maybe?*/ executeActionsForVerb(/*maybe args? */){
-        if(actions == null) {}
+    public void/*maybe?*/ executeActionsForVerb(String verb){
+        if(actions.get(verb) == null) {}
         else{
-            for(int i=0; i<actions.size(); i++){
-                String prefix = actions.get(i).substring(0, 3);
+            for(int i=0; i<actions.get(verb).size(); i++){
+                String prefix = actions.get(verb).get(i).substring(0, 3);
                 //all of the item events have unique combinations of letters at the beginning.
                 //we can check these against a set and use a switch case instead of a
                 //less efficient if-else chain.
-                String fullAction = actions.get(i);
+                String fullAction = actions.get(verb).get(i);
                 switch(prefix){
                     case "Sco": //Score(x) event
                         int pointsToAdd = Integer.parseInt(fullAction.substring(
                          (fullAction.indexOf("(") + 1), fullAction.indexOf(")")));
                         GameState.instance().addScore(pointsToAdd);
-                        actions.remove(i);
+                        actions.get(verb).remove(i);
                         i--;
+                        break;
                         //actions can only add points once. repeated use will not grant more
                         //points.
                     case "Wou": //Wound(x) event
                         int damage = Integer.parseInt(fullAction.substring(
                          (fullAction.indexOf("(") + 1), fullAction.indexOf(")")));
                         GameState.instance().woundPlayer(damage);
+                        break;
                         //unlike score events, you can continue to injure yourself
                         //repeatedly. That edge isn't signficantly duller between individual cuts.
                     case "Die": //Die event
+                        GameState.instance().killPlayer();
+                        break;
                     case "Win": //Win event
+                        GameState.instance().winGame();
+                        break;
                     case "Dro": //Drop event
+                        try{ //ignores the drop command if item isn't in your inventory.
+                            GameState.instance().removeFromInventory(this);
+                            GameState.instance().addItemToRoom(this,
+                             GameState.instance().getAdventurersCurrentRoom());
+                        } catch(Exception e){}
+                        break;
                     case "Dis": //Disappear event
+                        try{
+                            GameState.instance().removeFromInventory(this);
+                        } catch(Exception e){}
+                        GameState.instance().removeItemFromRoom(this,
+                         GameState.instance().getAdventurersCurrentRoom());
+                        break;
                     case "Tra": //Transform event
                     case "Tel": //Teleport event
                     default:
                         System.out.println("error.");
-                        System.out.println(fullAction);
+                        for(int a=0; i<actions.get(verb).size(); i++){
+                            System.out.println(actions.get(verb).get(a));
+                        }
                 }
             }
 

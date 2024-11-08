@@ -41,14 +41,18 @@ public class Interpreter {
                 System.out.print(
                     CommandFactory.instance().parse(command).execute());
 
+                if(GameState.instance().checkIfDead()){
+                    System.out.println("Everything goes dark, and you die.");
+                    break;
+                }
+                if(GameState.instance().checkIfWon()){
+                    System.out.println("You won! " + CommandFactory.instance().parse("score").execute() + "Great job!");
+                    break;
+                }
                 command = promptUser(commandLine);
+            }
+            if(command.equals("q")){
                 System.out.println("Bye!");
-            }
-            if(GameState.instance().checkIfDead()){
-                System.out.println("Everything goes dark, and you die.");
-            }
-            if(GameState.instance().checkIfWon()){
-                System.out.println("You won! " + CommandFactory.instance().parse("score").execute() + " Great job!");
             }
         } catch(Exception e) {
             e.printStackTrace();

@@ -56,7 +56,7 @@ public class CommandFactory {
                 }
                 else{return new UnknownCommand(c);}
       
-    }
+        }
     }
 
     private static String checkForArgs(String[] commands) {
