@@ -95,23 +95,29 @@ public class Item {
                 //less efficient if-else chain.
                 String fullAction = actions.get(i);
                 switch(prefix){
-                    case "Sco":
+                    case "Sco": //Score(x) event
                         int pointsToAdd = Integer.parseInt(fullAction.substring(
                          (fullAction.indexOf("(") + 1), fullAction.indexOf(")")));
                         GameState.instance().addScore(pointsToAdd);
                         actions.remove(i);
                         i--;
-                        //actions can only add points once. repeated use will not grant repeat
+                        //actions can only add points once. repeated use will not grant more
                         //points.
-                    case "Wou":
-
-                    case "Die":
-                    case "Win":
-                    case "Dro":
-                    case "Dis":
-                    case "Tra":
-                    case "Tel":
+                    case "Wou": //Wound(x) event
+                        int damage = Integer.parseInt(fullAction.substring(
+                         (fullAction.indexOf("(") + 1), fullAction.indexOf(")")));
+                        GameState.instance().woundPlayer(damage);
+                        //unlike score events, you can continue to injure yourself
+                        //repeatedly. That edge isn't signficantly duller between individual cuts.
+                    case "Die": //Die event
+                    case "Win": //Win event
+                    case "Dro": //Drop event
+                    case "Dis": //Disappear event
+                    case "Tra": //Transform event
+                    case "Tel": //Teleport event
                     default:
+                        System.out.println("error.");
+                        System.out.println(fullAction);
                 }
             }
 

@@ -42,10 +42,14 @@ public class Interpreter {
                     CommandFactory.instance().parse(command).execute());
 
                 command = promptUser(commandLine);
+                System.out.println("Bye!");
             }
-
-            System.out.println("Bye!");
-
+            if(GameState.instance().checkIfDead()){
+                System.out.println("Everything goes dark, and you die.");
+            }
+            if(GameState.instance().checkIfWon()){
+                System.out.println("You won! " + CommandFactory.instance().parse("score").execute() + " Great job!");
+            }
         } catch(Exception e) {
             e.printStackTrace();
         }
