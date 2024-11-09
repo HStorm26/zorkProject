@@ -22,7 +22,7 @@ public class GameState {
     private Room adventurersCurrentRoom;
     private HashSet<Room> visitedRooms;
     private int score, health;
-    private boolean hasWon, isDead;
+    private boolean hasWon;
     private Random randomNumber;
 
     // New for Zork III
@@ -43,7 +43,6 @@ public class GameState {
         this.score = 0;
         this.health = 100;
         this.hasWon = false;
-        this.isDead = false;
     }
 
     void restore(String filename) throws FileNotFoundException, IllegalSaveFormatException, Dungeon.IllegalDungeonFormatException {
@@ -98,15 +97,15 @@ public class GameState {
         }
 
         s.nextLine(); // Throw away "Adventurer:"
-        String currentRoomLine = s.nextLine();
-        adventurersCurrentRoom = dungeon.getRoom(currentRoomLine.substring("Current room: ".length()));
+        next = s.nextLine();
+        adventurersCurrentRoom = dungeon.getRoom(next.substring("Current room: ".length()));
 
         // New inventory to current room 
         inventory = new ArrayList<Item>();
         next = s.nextLine();
         if(next.startsWith("Inventory:")){
             try {
-                String playerInventory = s.nextLine();
+                String playerInventory = next;
                 playerInventory = playerInventory.substring("Inventory: ".length());
                 String[] inventoryItems = playerInventory.split(",");
                 for (String inventoryItem : inventoryItems) {
@@ -119,11 +118,12 @@ public class GameState {
                     }
                 }
             } catch (Exception e) {}
+
             next = s.nextLine();
         }
-        health = Integer.parseInt(next.substring("Current health: ".length()));
+        this.health = Integer.parseInt(next.substring("Current health: ".length()));
         next = s.nextLine();
-        score = Integer.parseInt(next.substring("Current score: ".length()));
+        this.score = Integer.parseInt(next.substring("Current score: ".length()));
     }
 
     void store(String saveName) throws IOException {
@@ -281,17 +281,23 @@ public class GameState {
     }
 
     void woundPlayer(int damage){
-        health -= damage;
+        this.health -= damage;
+        if(health <= 0){
+            this.killPlayer();
+        }
     }
 
     int getHealth(){
         return health;
     }
     boolean checkIfDead(){
-        return isDead;
+        if(health <= 0){
+            return true;
+        }
+        else{ return false; }
     }
     void killPlayer(){
-        this.isDead = true;
+        this.health = 0;
     }
     boolean checkIfWon(){
         return hasWon;

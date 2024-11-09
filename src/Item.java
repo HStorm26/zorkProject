@@ -15,6 +15,7 @@ public class Item {
     public Item(Scanner s) throws NoItemException {
         this.aliases = new HashSet<>();
         this.messages = new Hashtable<>();
+        this.actions = new Hashtable<>();
         String next = s.nextLine().strip();
         if (next.equals("Items:")) {
             next = s.nextLine();
@@ -38,11 +39,10 @@ public class Item {
                 if(verb.contains("[")){
                     hasActions = true;
                     verb = verb.substring(0, verb.indexOf("["));
-                    this.actions = new Hashtable<>();
-                    
                 }
                 String mssg = next.substring(colon + 1);
                 this.messages.put(verb, mssg);
+
                 if(hasActions){
                     actions.put(verb,new ArrayList<>());
                     String[] actionArray = next.substring((next.indexOf("[") + 1), next.indexOf("]")).split(",");
@@ -88,7 +88,7 @@ public class Item {
     public String toString() {
         return primaryName;
     }
-    public void/*maybe?*/ executeActionsForVerb(String verb){
+    public void executeActionsForVerb(String verb){
         if(actions.get(verb) == null) {}
         else{
             for(int i=0; i<actions.get(verb).size(); i++){
