@@ -12,7 +12,7 @@ class HealthCommand extends Command{
             return "There are a few more bruises than before. Pain blooms at each point if you touch them.\n";
         }
         else if(hp >= 40){
-            return "Your breath catches a little with each inhale. A bone or two doesn't feel quite right.\n";
+            return "Each breath is heavy and labored. A bone or two doesn't feel quite right.\n";
         }
         else if(hp >= 20){
             return "Your heartbeat rings in your ears. Each pound shoots more pain into your head. Everything hurts.\n";
