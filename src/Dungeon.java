@@ -113,4 +113,7 @@ public class Dungeon {
     public String getFilename() {
         return this.filename; 
     }
+    public Hashtable<String, Room> getRooms(){
+        return this.rooms;
+    }
 }

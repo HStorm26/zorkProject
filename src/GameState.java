@@ -299,7 +299,7 @@ public class GameState {
     void winGame(){
         this.hasWon = true;
     }
-    double getRandom(){
+    public double getRandom(){ //public so we can do randomness everywhere
        if(randomNumber == null){
             randomNumber = new Random(12);
        }

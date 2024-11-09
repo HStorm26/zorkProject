@@ -2,6 +2,7 @@ import java.util.Hashtable;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Item {
 
@@ -159,6 +160,18 @@ public class Item {
                         }
                         break;
                     case "Tel": //Teleport event
+                        Hashtable<String,Room> allRooms = 
+                         GameState.instance().getDungeon().getRooms();
+                        int shuffle = (int) (GameState.instance().getRandom() * allRooms.size());
+                        String dest = "";
+                        Iterator<String> iter = allRooms.keySet().iterator();
+                        for(int a=0; a<=shuffle; a++){
+                            dest = iter.next();
+                        }
+                        GameState.instance()
+                         .setAdventurersCurrentRoom(allRooms.get(dest));
+                        GameState.instance().visit(allRooms.get(dest));
+                        break;
                     default:
                         System.out.println("error.");
                         for(int a=0; i<actions.get(verb).size(); i++){
