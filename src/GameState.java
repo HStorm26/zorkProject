@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.util.Iterator;
+import java.util.Random;
 
 public class GameState {
     public static class IllegalSaveFormatException extends Exception {
@@ -22,6 +23,7 @@ public class GameState {
     private HashSet<Room> visitedRooms;
     private int score, health;
     private boolean hasWon, isDead;
+    private Random randomNumber;
 
     // New for Zork III
     private ArrayList<Item> inventory;
@@ -296,5 +298,11 @@ public class GameState {
     }
     void winGame(){
         this.hasWon = true;
+    }
+    double getRandom(){
+       if(randomNumber == null){
+            randomNumber = new Random(12);
+       }
+       return randomNumber.nextDouble();
     }
 }
