@@ -134,6 +134,30 @@ public class Item {
                          GameState.instance().getAdventurersCurrentRoom());
                         break;
                     case "Tra": //Transform event
+                        String newName = fullAction.substring(fullAction.indexOf("(") + 1,
+                         fullAction.indexOf(")"));
+                        Item newItem = GameState.instance().getDungeon().getItem(newName);
+                        try{ //if the item is in the player's inventory, transform from there
+                            GameState.instance().getItemFromInventoryNamed(this.primaryName);
+                            GameState.instance().removeFromInventory(this);
+                            int totalWeight = 0;
+                            for(int a=0; a<GameState.instance().getInventory().size(); a++){
+                                totalWeight += GameState.instance().getInventory().get(a).getWeight();
+                            }
+                            if(totalWeight + newItem.getWeight() > 40){
+                                GameState.instance().addItemToRoom(newItem, GameState.instance()
+                                 .getAdventurersCurrentRoom());
+                            }
+                            else{
+                                GameState.instance().addToInventory(newItem);
+                            }
+                        } catch(Exception e){ //if the item is in the room, transform from there
+                            GameState.instance().removeItemFromRoom(this, GameState.instance()
+                             .getAdventurersCurrentRoom());
+                            GameState.instance().addItemToRoom(this, GameState.instance()
+                             .getAdventurersCurrentRoom());
+                        }
+                        break;
                     case "Tel": //Teleport event
                     default:
                         System.out.println("error.");
