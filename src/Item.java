@@ -155,7 +155,7 @@ public class Item {
                         } catch(Exception e){ //if the item is in the room, transform from there
                             GameState.instance().removeItemFromRoom(this, GameState.instance()
                              .getAdventurersCurrentRoom());
-                            GameState.instance().addItemToRoom(this, GameState.instance()
+                            GameState.instance().addItemToRoom(newItem, GameState.instance()
                              .getAdventurersCurrentRoom());
                         }
                         break;
