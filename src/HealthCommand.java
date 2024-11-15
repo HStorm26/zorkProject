@@ -2,7 +2,7 @@ class HealthCommand extends Command{
     
     String execute(){
         int hp = GameState.instance().getHealth();
-        if(hp == 100){
+        if(hp >= 100){
             return "You feel capable and excited for the adventure to continue.\n";
         }
         else if(hp >= 80){
