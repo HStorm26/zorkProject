@@ -1,0 +1,3 @@
+class HaggleCommand extends Command{
+
+}

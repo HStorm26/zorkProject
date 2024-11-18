@@ -1,0 +1,3 @@
+class SellCommand extends Command{
+
+}
