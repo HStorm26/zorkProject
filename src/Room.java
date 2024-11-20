@@ -34,6 +34,7 @@ public class Room {
         }
         if(lineOfDesc.startsWith("Shop: ")){
             this.shop = new Shop(lineOfDesc.substring("Shop: ".length()));
+            lineOfDesc = s.nextLine();
         }
         while (!lineOfDesc.equals("---") && !lineOfDesc.equals("===")) {
             desc += lineOfDesc + "\n";
@@ -66,7 +67,7 @@ public class Room {
             description += "\nThere is a " + item + " here.";
         }
         if(this.shop != null){
-            description += this.shop.printContents();
+            description += this.shop.describe();
         }
         for (Exit exit : this.exits) {
             description += "\n" + exit.describe();
