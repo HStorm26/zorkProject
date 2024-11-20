@@ -41,6 +41,8 @@ public class Shop {
         this.contents.remove(item);
     }
     void buyItemFromPlayer(Item item){
-
+        GameState.instance().addMoney(item.getPriceFromInventory());
+        this.contents.add(item);
+        GameState.instance().removeFromInventory(item);
     }
 }

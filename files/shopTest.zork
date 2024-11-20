@@ -19,10 +19,15 @@ sword
 250
 swing:Wrong feature addition.
 ---
+strange key,key
+5
+0
+unlock[Win]:incredible stuff.
+---
 ===
 Rooms:
 Room one
-Contents: gold bar
+Contents: gold bar,strange key
 This is the room without the shop in it, so you can test to make sure you can't buy items that are elsewhere.
 ---
 Room two
