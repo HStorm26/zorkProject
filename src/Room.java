@@ -126,7 +126,7 @@ public class Room {
     }
     public Shop getShop() throws Shop.NoShopException{
         if(this.shop == null){
-            throw new Shop.NoShopException;
+            throw new Shop.NoShopException();
         }
         return this.shop;
     }
