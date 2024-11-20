@@ -123,6 +123,8 @@ public class GameState {
         this.health = Integer.parseInt(next.substring("Current health: ".length()));
         next = s.nextLine();
         this.score = Integer.parseInt(next.substring("Current score: ".length()));
+        next = s.nextLine();
+        this.money = Integer.parseInt(next.substring("Current money: ".length()));
     }
 
     void store(String saveName) throws IOException {
@@ -162,6 +164,7 @@ public class GameState {
         }
         w.println("Current health: " + this.health);
         w.println("Current score: " + this.score);
+        w.println("Current money: " + this.money);
         w.flush();
         w.close();
     }
@@ -207,6 +210,14 @@ public class GameState {
 
     ArrayList<Item> getInventory() {
         return this.inventory;
+    }
+
+    int getInventoryWeight(){
+        int totalWeight = 0;
+        for(Item nextItem : this.inventory){
+            totalWeight += nextItem.getWeight();
+        }
+        return totalWeight;
     }
 
     void addToInventory(Item item) {
