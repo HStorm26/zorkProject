@@ -11,16 +11,15 @@ public class Shop {
         for(int i=0; i<itemNames.length; i++){
             nextItem = GameState.instance().getDungeon().getItem(itemNames[i]);
             this.contents.add(nextItem);
-            System.out.println(nextItem.getPrimaryName());
 
         }
     }
-    String printContents(){
+    String describe(){
         String contentList = "\nThere is a shop here. It sells:\n";
         java.util.Iterator<Item> iter = contents.iterator();
         while(iter.hasNext()){
             Item nextItem = iter.next();
-            contentList += "a " + nextItem.getPrimaryName() + " for " + nextItem.getBuyPrice()
+            contentList += "a " + nextItem.getPrimaryName() + " for " + nextItem.getPriceFromShop()
              + " " + GameState.instance().getDungeon().getCurrencyName();
             if(iter.hasNext()){
                 contentList += "\n";
@@ -28,5 +27,20 @@ public class Shop {
         }
         return contentList;
     }
+    Item getItem(String itemName){
+        for(Item nextItem : this.contents){
+            if(nextItem.goesBy(itemName)){
+                return nextItem;
+            }
+        }
+        return null;
+    }
+    void sellItemToPlayer(Item item){
+        GameState.instance().addMoney(item.getPriceFromShop() * (-1));
+        GameState.instance().addToInventory(item);
+        this.contents.remove(item);
+    }
+    void buyItemFromPlayer(Item item){
 
+    }
 }

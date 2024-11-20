@@ -3,11 +3,12 @@ Dungeon file: ../files/shopTest.zork
 Room states:
 Room one:
 beenHere=true
-Contents: gold bar
+Contents: 
 ---
 ===
 Adventurer:
 Current room: Room one
+Inventory: gold bar,
 Current health: 100
 Current score: 0
-Current money: 0
+Current money: 9999

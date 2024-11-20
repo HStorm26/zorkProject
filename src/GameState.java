@@ -159,7 +159,7 @@ public class GameState {
             for (Item item : inventory) {
                 inventoryList += (item.getPrimaryName() + ",");
                 inventoryList = inventoryList.substring(0, inventoryList.length());
-                w.print(inventoryList);
+                w.println(inventoryList);
             }
         }
         w.println("Current health: " + this.health);

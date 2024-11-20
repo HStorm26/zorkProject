@@ -60,15 +60,6 @@ public class Item {
         }
     }
 
-    // Simple constructor for testing purposes
-    public Item(String primaryName, int weight) {
-        this.primaryName = primaryName;
-        this.weight = weight;
-        this.aliases = new HashSet<>();
-        this.aliases.add(primaryName.toLowerCase());  // Add primary name as alias
-        this.messages = new Hashtable<>();
-    }
-
     public boolean goesBy(String name) {
         return this.aliases.contains(name.toLowerCase());
     }
@@ -94,10 +85,10 @@ public class Item {
         return primaryName;
     }
 
-    public int getSellPrice(){//how much the item costs when the player gives it to a store.
+    public int getPriceFromInventory(){
         return price;
     }
-    public int getBuyPrice(){//how much the item costs when the player gets in from a store.
+    public int getPriceFromShop(){
         return price * 2;
     }
     public void executeActionsForVerb(String verb){
