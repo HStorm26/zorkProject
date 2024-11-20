@@ -33,9 +33,7 @@ public class Room {
             lineOfDesc = s.nextLine();
         }
         if(lineOfDesc.startsWith("Shop: ")){
-            System.out.println("Nice! we found it!");
             this.shop = new Shop(lineOfDesc.substring("Shop: ".length()));
-            lineOfDesc = s.nextLine();
         }
         while (!lineOfDesc.equals("---") && !lineOfDesc.equals("===")) {
             desc += lineOfDesc + "\n";
