@@ -68,7 +68,7 @@ public class Room {
             description += "\nThere is a " + item + " here.";
         }
         if(this.shop != null){
-            description += "\nThere is a shop here!";
+            description += this.shop.printContents();
         }
         for (Exit exit : this.exits) {
             description += "\n" + exit.describe();
