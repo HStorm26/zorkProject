@@ -13,10 +13,11 @@ public class Dungeon {
         }
     }
     private String filename;
-    private String title;
+    private String title, currencyName;
     private Room entry;
     private Hashtable<String, Room> rooms;
     private Hashtable<String, Item> items;
+    private boolean hasShops = false;
 
     Dungeon(String title, Room entry) {
         this.title = title;
@@ -38,9 +39,16 @@ public class Dungeon {
         if (!s.nextLine().equals("===")) {
             throw new IllegalDungeonFormatException("No '===' after version indicator.");
         }
-
+        // Currency name
+        String moneyName = s.nextLine();
+        if(moneyName.startsWith("Currency Name: ")){
+            this.currencyName = moneyName.substring("Currency Name: ".length());
+            s.nextLine(); //throw away "==="
+            moneyName = s.nextLine();
+            hasShops = true;
+        }
         // Items section
-        if (!s.nextLine().equals("Items:")) {
+        if (!moneyName.equals("Items:")) {
             throw new IllegalDungeonFormatException("No 'Items:' line where expected.");
         }
 
@@ -52,7 +60,6 @@ public class Dungeon {
         } catch (NoItemException e) {
             // End of items
         }
-
         // Rooms section
         if (!s.nextLine().equals("Rooms:")) {
             throw new IllegalDungeonFormatException("No 'Rooms:' line where expected.");
@@ -115,5 +122,11 @@ public class Dungeon {
     }
     public Hashtable<String, Room> getRooms(){
         return this.rooms;
+    }
+    public String getCurrencyName(){
+        return this.currencyName;
+    }
+    public boolean hasShops(){
+        return this.hasShops;
     }
 }

@@ -11,6 +11,7 @@ public class Item {
     private Hashtable<String, String> messages;
     private HashSet<String> aliases;
     private Hashtable<String,ArrayList<String>> actions;
+    private int price;
 
     public Item(Scanner s) throws NoItemException {
         this.aliases = new HashSet<>();
@@ -31,6 +32,10 @@ public class Item {
             next = s.nextLine();
             this.weight = Integer.parseInt(next);
             next = s.nextLine();
+            if(GameState.instance().getDungeon().hasShops()){
+                this.price = Integer.parseInt(next);
+                next = s.nextLine();
+            }
 
             while (!next.equals("---")) {
                 boolean hasActions = false;
@@ -87,6 +92,13 @@ public class Item {
     @Override
     public String toString() {
         return primaryName;
+    }
+
+    public int getSellPrice(){//how much the item costs when the player gives it to a store.
+        return price;
+    }
+    public int getBuyPrice(){//how much the item costs when the player gets in from a store.
+        return price * 2;
     }
     public void executeActionsForVerb(String verb){
         if(actions.get(verb) == null) {}

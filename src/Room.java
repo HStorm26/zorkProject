@@ -8,6 +8,7 @@ public class Room {
     private String name;
     private String desc;
     private ArrayList<Exit> exits;
+    private Shop shop;
 
     public Room(String name) {
         this.name = name;
@@ -16,6 +17,7 @@ public class Room {
 
     public Room(Scanner s) throws NoRoomException, Dungeon.IllegalDungeonFormatException {
         this.exits = new ArrayList<>();
+        this.shop = null;
         name = s.nextLine();
         desc = "";
         if (name.equals("===")) {
@@ -28,6 +30,11 @@ public class Room {
             for(int i=0; i<items.length; i++){
                 this.add(GameState.instance().getDungeon().getItem(items[i]));
             }
+            lineOfDesc = s.nextLine();
+        }
+        if(lineOfDesc.startsWith("Shop: ")){
+            System.out.println("Nice! we found it!");
+            this.shop = new Shop(lineOfDesc.substring("Shop: ".length()));
             lineOfDesc = s.nextLine();
         }
         while (!lineOfDesc.equals("---") && !lineOfDesc.equals("===")) {
@@ -59,6 +66,9 @@ public class Room {
         }
         for (Item item : items) {
             description += "\nThere is a " + item + " here.";
+        }
+        if(this.shop != null){
+            description += "\nThere is a shop here!";
         }
         for (Exit exit : this.exits) {
             description += "\n" + exit.describe();
@@ -113,5 +123,11 @@ public class Room {
             }
         }
         return null;
+    }
+    public Shop getShop() throws Shop.NoShopException{
+        if(this.shop == null){
+            throw new Shop.NoShopException;
+        }
+        return this.shop;
     }
 }

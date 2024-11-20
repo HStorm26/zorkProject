@@ -47,7 +47,13 @@ public class CommandFactory {
                 return new ScoreCommand();
             case "health":
                 return new HealthCommand();
-    
+            case "buy":
+                return new BuyCommand(checkForArgs(commands));
+            case "sell":
+                return new SellCommand(checkForArgs(commands));
+            case "haggle":
+            case "bargain":
+                return new HaggleCommand();
             default:
                 if(!checkForArgs(commands).equals("")){
 

@@ -21,11 +21,9 @@ public class GameState {
     private Dungeon dungeon;
     private Room adventurersCurrentRoom;
     private HashSet<Room> visitedRooms;
-    private int score, health;
+    private int score, health, money;
     private boolean hasWon;
     private Random randomNumber;
-
-    // New for Zork III
     private ArrayList<Item> inventory;
     private Hashtable<Room, HashSet<Item>> roomContents;
 
@@ -41,6 +39,7 @@ public class GameState {
         this.inventory = new ArrayList<Item>(); // Initialize the inventory here
         this.roomContents = new Hashtable<>(); // Initialize roomContents
         this.score = 0;
+        this.money = 0;
         this.health = 100;
         this.hasWon = false;
     }
@@ -313,5 +312,13 @@ public class GameState {
             randomNumber = new Random(12);
        }
        return randomNumber.nextDouble();
+    }
+
+    int getMoney(){
+        return this.money;
+    }
+
+    void addMoney(int addition){
+        this.money += addition;
     }
 }

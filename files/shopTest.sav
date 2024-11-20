@@ -1,0 +1,12 @@
+Zork++ save data
+Dungeon file: ../files/shopTest.zork
+Room states:
+Room one:
+beenHere=true
+Contents: gold bar
+---
+===
+Adventurer:
+Current room: Room one
+Current health: 100
+Current score: 0
