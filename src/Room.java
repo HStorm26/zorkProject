@@ -8,7 +8,7 @@ public class Room {
     private String name;
     private String desc;
     private ArrayList<Exit> exits;
-
+    private HashSet<Enemy> enemies;
     public Room(String name) {
         this.name = name;
         this.exits = new ArrayList<>();
@@ -16,6 +16,7 @@ public class Room {
 
     public Room(Scanner s) throws NoRoomException, Dungeon.IllegalDungeonFormatException {
         this.exits = new ArrayList<>();
+        this.enemies = new HashSet<Enemy>();
         name = s.nextLine();
         desc = "";
         if (name.equals("===")) {
@@ -28,8 +29,21 @@ public class Room {
             for(int i=0; i<items.length; i++){
                 this.add(GameState.instance().getDungeon().getItem(items[i]));
             }
-            lineOfDesc = s.nextLine();
         }
+            //enemy
+            String enemy  = s.nextLine();
+             if(enemy.startsWith("Enemies: ")){
+                 String[] enemyList = enemy.substring("Enemies: ".length()).split(",");
+                 for(int i =0;i<enemyList.length();i++){
+                     try{
+                         this.addEnemy(GameState.instance().getEnemy(enemyList[i]));
+                     }
+                     catch(NoEnemyException e);
+                 }
+             }
+             lineOfDesc = s.nextLine();
+
+    
         while (!lineOfDesc.equals("---") && !lineOfDesc.equals("===")) {
             desc += lineOfDesc + "\n";
             lineOfDesc = s.nextLine();

@@ -52,6 +52,22 @@ public class Dungeon {
         } catch (NoItemException e) {
             // End of items
         }
+     //Enemies section
+        if(!s.nextLine().equals("Enemies:")){
+            throw new IllegalDungeonFormatException("No Enemies line where expected.");
+         }
+
+        try{
+            while(true){
+                Enemy newEnemy = new Enemy(s);
+                GameState.instance().addEnemy(newEnemy);
+                }
+        }
+        catch(NoEnemyException e){
+        }
+
+
+
 
         // Rooms section
         if (!s.nextLine().equals("Rooms:")) {
