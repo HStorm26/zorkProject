@@ -14,7 +14,7 @@ public class Room {
         this.exits = new ArrayList<>();
     }
 
-    public Room(Scanner s) throws NoRoomException, Dungeon.IllegalDungeonFormatException {
+    public Room(Scanner s) throws  NoRoomException, Dungeon.IllegalDungeonFormatException {
         this.exits = new ArrayList<>();
         this.enemies = new HashSet<Enemy>();
         name = s.nextLine();
@@ -34,13 +34,15 @@ public class Room {
             String enemy  = s.nextLine();
              if(enemy.startsWith("Enemies: ")){
                  String[] enemyList = enemy.substring("Enemies: ".length()).split(",");
-                 for(int i =0;i<enemyList.length();i++){
+                 for(int i =0;i<enemyList.length;i++){
                      try{
-                         this.addEnemy(GameState.instance().getEnemy(enemyList[i]));
+                         this.addEnemy(GameState.instance().getEnemyNamed(enemyList[i]));
                      }
-                     catch(NoEnemyException e);
+                     catch(NoEnemyException e){
                  }
              }
+             }
+
              lineOfDesc = s.nextLine();
 
     
@@ -52,6 +54,7 @@ public class Room {
         if (!lineOfDesc.equals("---")) {
             throw new Dungeon.IllegalDungeonFormatException("No '---' after room.");
         }
+        System.out.println(this + ": " + this.desc);
     }
 
     public String getName() {
@@ -74,6 +77,9 @@ public class Room {
         for (Item item : items) {
             description += "\nThere is a " + item + " here.";
         }
+        for(Enemy e: this.enemies){
+            description += "\nThere is a " + e + " here.";
+        }
         for (Exit exit : this.exits) {
             description += "\n" + exit.describe();
         }
@@ -87,6 +93,9 @@ public class Room {
         HashSet<Item> items = this.getContents();
         for (Item item : items) {
             description += "\nThere is a " + item + " here.";
+        }
+        for(Enemy e: this.enemies){
+            description += "\nThere is a "+ e + " here.";
         }
         for (Exit exit : this.exits) {
             description += "\n" + exit.describe();
@@ -127,5 +136,39 @@ public class Room {
             }
         }
         return null;
-    }
+      }
+
+      public void addEnemy(Enemy enemy){
+          this.enemies.add(enemy);
+      }
+      public void removeEnemy(Enemy enemy) throws NoEnemyException{
+          try{
+              this.enemies.remove(enemy);
+          }
+          catch(Exception e){
+              throw new NoEnemyException();
+          }
+      }
+      Enemy getEnemyNamed(String enemyName) throws NoEnemyException{
+          Enemy result = null;
+          for(Enemy e:this.enemies){
+              if(e.getName().equals(enemyName)){
+                  result = e;
+              }
+          }
+          if(result==null){
+              throw new NoEnemyException();
+             }
+          return result;
+      }
+      HashSet<Enemy> getAllEnemies(){
+          return this.enemies;
+      }
+      public String toString(){
+          return this.name;
+      }
 }
+
+
+
+

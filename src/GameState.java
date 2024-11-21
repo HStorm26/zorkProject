@@ -29,6 +29,9 @@ public class GameState {
     private ArrayList<Item> inventory;
     private Hashtable<Room, HashSet<Item>> roomContents;
 
+    //Will adding ArrayList of enemies for hydration
+    private ArrayList<Enemy> enemies;
+
     static synchronized GameState instance() {
         if (theInstance == null) {
             theInstance = new GameState();
@@ -37,6 +40,7 @@ public class GameState {
     }
 
     private GameState() {
+        this.enemies = new ArrayList<Enemy>();
         this.visitedRooms = new HashSet<Room>();
         this.inventory = new ArrayList<Item>(); // Initialize the inventory here
         this.roomContents = new Hashtable<>(); // Initialize roomContents
@@ -45,7 +49,7 @@ public class GameState {
         this.hasWon = false;
     }
 
-    void restore(String filename) throws FileNotFoundException, IllegalSaveFormatException, Dungeon.IllegalDungeonFormatException {
+    void restore(String filename) throws NoEnemyException, FileNotFoundException, IllegalSaveFormatException, Dungeon.IllegalDungeonFormatException {
         Scanner s = new Scanner(new FileReader(filename));
 
         if (!s.nextLine().equals("Zork++ save data")) {
@@ -85,6 +89,17 @@ public class GameState {
                     
                     
                 }
+
+
+                //New enemy hydration
+                String enemyLine = s.nextLine();
+                if(enemyLine.startsWith("Enemies: ")){
+                    String[] roomEnemies = enemyLine.split(",");
+                    for(int i = 0;i<roomEnemies.length;i++){
+                        this.addEnemy(this.getEnemyNamed(roomEnemies[i]));
+                    }
+                }
+
                 //removes items from the requisite locations.
                 
 
@@ -145,9 +160,22 @@ public class GameState {
                 if(iterator.hasNext()){
                     w.print(",");
                 }
-            }
+                w.print("\n");
+
+
+                //need to figure out enemy persistance
+               w.print("Enemies: ");
+               Iterator<Enemy> enemyIterator = visitedRoom.getAllEnemies().iterator();
+               while(enemyIterator.hasNext()){
+                   Enemy e = enemyIterator.next();
+                   w.print(e.getName());
+                   if(enemyIterator.hasNext()){
+                       w.print(",");
+                   }
+               }
             w.print("\n");
             w.println("---");
+        }
         }
 
         w.println("===");
@@ -314,4 +342,22 @@ public class GameState {
        }
        return randomNumber.nextDouble();
     }
+    
+    public void addEnemy(Enemy enemy){
+        this.enemies.add(enemy);
+    }
+    public Enemy getEnemyNamed(String enemyName) throws NoEnemyException{
+        Enemy result = null;
+        for(Enemy e: this.enemies){
+            if(e.getName().equals(enemyName)){
+                result = e;
+            }
+        }
+        if(result==null){
+            throw new NoEnemyException();
+        }
+        return result;
+    }
+
+
 }

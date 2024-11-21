@@ -46,4 +46,20 @@ public class Enemy{
         
         return " ";
     }
+    void takeDamage(int damage){
+        this.health-=damage;
+    }
+    String die(){
+        return this.deathMessage;
+    }
+    public String toString(){
+        return this.name;
+    }
+    String getName(){
+        return this.name;
+    }
+
+  
+
+
 }
