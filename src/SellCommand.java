@@ -13,23 +13,23 @@ class SellCommand extends Command{
         Item item;
         Shop shop;
         try{
-            item = GameState.instance().getItemFromInventoryNamed(itemName);
-        }catch(Exception e){
-            return "You don't have that item to sell!\n";
-        }
-        try{
             shop = GameState.instance().getAdventurersCurrentRoom().getShop();
         }catch(Exception e){
-            return "There's no shop here to sell to!\n";
+            return "There's nobody here for you to sell your items to.\n";
+        }
+        try{
+            item = GameState.instance().getItemFromInventoryNamed(itemName);
+        }catch(Exception e){
+            return "The shopkeeper refuses your offer of an invisible " + itemName + ".\n";
         }
         if(item.getPriceFromInventory() == 0){
             //"key" items (items players need for progression) will not be able to be sold.
             //they should have their prices set to zero.
-            return "You're not going to want to sell the " + item.getPrimaryName() + ".\n";
+            return "As the shopkeeper examines the " + item.getPrimaryName() + ", a strange shiver goes down your spine.\nYou call off the trade, unable to explain why.\n";
         }
         else{
             shop.buyItemFromPlayer(item);
-            return "You have parted with the " + item.getPrimaryName() + " in exchange for some money.\n";
+            return "The shopkeeper takes your " + item.getPrimaryName() + " and hands you a bag with the " + GameState.instance().getDungeon().getCurrencyName() + ". They seemed pleased with the trade.\n";
         }
     }
 }
