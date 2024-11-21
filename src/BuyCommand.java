@@ -7,8 +7,9 @@ class BuyCommand extends Command{
     }
 
     String execute(){
-        if(itemName.equals(""){
+        if(itemName.equals("")){
             return "buy what?\n";
+        }
         try{
             Item item = GameState.instance().getAdventurersCurrentRoom().getShop().getItem(itemName);
             if(item == null){

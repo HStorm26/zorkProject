@@ -35,6 +35,7 @@ Shop: sword,diamond
 This room will have the shop in it.
 ---
 Room three
+Shop: 0.01
 This room may also have a shop, so you can test to make sure shops are distinct between rooms.
 ---
 ===
