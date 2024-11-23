@@ -29,21 +29,21 @@ public class Room {
             for(int i=0; i<items.length; i++){
                 this.add(GameState.instance().getDungeon().getItem(items[i]));
             }
+            lineOfDesc = s.nextLine();
         }
             //enemy
-            String enemy  = s.nextLine();
-             if(enemy.startsWith("Enemies: ")){
-                 String[] enemyList = enemy.substring("Enemies: ".length()).split(",");
-                 for(int i =0;i<enemyList.length;i++){
-                     try{
-                         this.addEnemy(GameState.instance().getEnemyNamed(enemyList[i]));
-                     }
-                     catch(NoEnemyException e){
-                 }
-             }
-             }
+             if(lineOfDesc.startsWith("Enemies: ")){
+                 String[] enemyList = lineOfDesc.substring("Enemies: ".length()).split(",");
 
-             lineOfDesc = s.nextLine();
+                 for(int i =0;i<enemyList.length;i++){
+                    
+                         this.addEnemy(GameState.instance().getDungeon().getEnemy(enemyList[i]));
+                     
+                    
+                
+             }
+                 lineOfDesc = s.nextLine();
+             }
 
     
         while (!lineOfDesc.equals("---") && !lineOfDesc.equals("===")) {
@@ -54,7 +54,6 @@ public class Room {
         if (!lineOfDesc.equals("---")) {
             throw new Dungeon.IllegalDungeonFormatException("No '---' after room.");
         }
-        System.out.println(this + ": " + this.desc);
     }
 
     public String getName() {

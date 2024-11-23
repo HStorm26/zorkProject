@@ -18,7 +18,6 @@ public class Exit {
         if (srcTitle.equals("===")) {
             throw new NoExitException();
         }
-        System.out.println(this.src);
         this.src = d.getRoom(srcTitle);
         this.dir = s.nextLine();
         this.dest = d.getRoom(s.nextLine());

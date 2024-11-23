@@ -17,18 +17,21 @@ public class Dungeon {
     private Room entry;
     private Hashtable<String, Room> rooms;
     private Hashtable<String, Item> items;
+    private Hashtable<String, Enemy> enemies;
 
     Dungeon(String title, Room entry) {
         this.title = title;
         this.entry = entry;
         this.rooms = new Hashtable<>();
         this.items = new Hashtable<>();
+        this.enemies = new Hashtable<>();
     }
 
     public Dungeon(String filename) throws FileNotFoundException, IllegalDungeonFormatException {
         this.filename = filename;
         this.rooms = new Hashtable<>();
         this.items = new Hashtable<>();
+        this.enemies = new Hashtable<>();
         Scanner s = new Scanner(new FileReader(filename));
 
         
@@ -60,7 +63,7 @@ public class Dungeon {
         try{
             while(true){
                 Enemy newEnemy = new Enemy(s);
-                GameState.instance().addEnemy(newEnemy);
+                add(newEnemy);
                 }
         }
         catch(NoEnemyException e){
@@ -122,9 +125,15 @@ public class Dungeon {
     public void add(Item item) {
         this.items.put(item.getPrimaryName(), item);
     }
+    public void add(Enemy enemy){
+        this.enemies.put(enemy.getName(),enemy);
+    }
 
     public Room getRoom(String roomName) {
         return this.rooms.get(roomName);
+    }
+    public Enemy getEnemy(String enemyName){
+        return this.enemies.get(enemyName);
     }
     public String getFilename() {
         return this.filename; 

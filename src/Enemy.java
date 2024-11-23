@@ -36,7 +36,6 @@ public class Enemy{
         else{
             throw new NoEnemyException();
         }
-        System.out.println(this);
     }
 
 
@@ -58,6 +57,7 @@ public class Enemy{
     String getName(){
         return this.name;
     }
+    
 
   
 

@@ -94,9 +94,13 @@ public class GameState {
                 //New enemy hydration
                 String enemyLine = s.nextLine();
                 if(enemyLine.startsWith("Enemies: ")){
-                    String[] roomEnemies = enemyLine.split(",");
+                    String enemyContents = enemyLine.substring("Enemies: ".length());
+                    String[] roomEnemies = enemyContents.split(",");
                     for(int i = 0;i<roomEnemies.length;i++){
-                        this.addEnemy(this.getEnemyNamed(roomEnemies[i]));
+                        if(roomEnemies[i].isEmpty()){
+                            break;
+                        }
+                      this.addEnemyToRoom(this.getDungeon().getEnemy(roomEnemies[i]),this.getDungeon().getRoom(next));
                     }
                 }
 
@@ -160,6 +164,7 @@ public class GameState {
                 if(iterator.hasNext()){
                     w.print(",");
                 }
+            }
                 w.print("\n");
 
 
@@ -176,7 +181,7 @@ public class GameState {
             w.print("\n");
             w.println("---");
         }
-        }
+        
 
         w.println("===");
         w.println("Adventurer:");
@@ -346,17 +351,9 @@ public class GameState {
     public void addEnemy(Enemy enemy){
         this.enemies.add(enemy);
     }
-    public Enemy getEnemyNamed(String enemyName) throws NoEnemyException{
-        Enemy result = null;
-        for(Enemy e: this.enemies){
-            if(e.getName().equals(enemyName)){
-                result = e;
-            }
-        }
-        if(result==null){
-            throw new NoEnemyException();
-        }
-        return result;
+    public void addEnemyToRoom(Enemy enemy, Room room){
+        room.addEnemy(enemy);
+
     }
 
 
