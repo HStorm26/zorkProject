@@ -1,8 +1,7 @@
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.HashSet;
 import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Item {
 
@@ -10,7 +9,7 @@ public class Item {
     private int weight;
     private Hashtable<String, String> messages;
     private HashSet<String> aliases;
-    private Hashtable<String,ArrayList<String>> actions;
+    private Hashtable<String, ArrayList<String>> actions;
     private int price;
 
     public Item(Scanner s) throws NoItemException {
@@ -32,7 +31,7 @@ public class Item {
             next = s.nextLine();
             this.weight = Integer.parseInt(next);
             next = s.nextLine();
-            if(GameState.instance().getDungeon().hasShops()){
+            if (GameState.instance().getDungeon().hasShops()) {
                 this.price = Integer.parseInt(next);
                 next = s.nextLine();
             }
@@ -41,15 +40,15 @@ public class Item {
                 boolean hasActions = false;
                 int colon = next.indexOf(":");
                 String verb = next.substring(0, colon);
-                if(verb.contains("[")){
+                if (verb.contains("[")) {
                     hasActions = true;
                     verb = verb.substring(0, verb.indexOf("["));
                 }
                 String mssg = next.substring(colon + 1);
                 this.messages.put(verb, mssg);
 
-                if(hasActions){
-                    actions.put(verb,new ArrayList<>());
+                if (hasActions) {
+                    actions.put(verb, new ArrayList<>());
                     String[] actionArray = next.substring((next.indexOf("[") + 1), next.indexOf("]")).split(",");
                     actions.get(verb).addAll(java.util.Arrays.asList(actionArray));
                 }
@@ -85,104 +84,106 @@ public class Item {
         return primaryName;
     }
 
-    public int getPriceFromInventory(){
+    public int getPriceFromInventory() {
         return price;
     }
-    public int getPriceFromShop(){
+
+    public int getPriceFromShop() {
         return price * 2;
     }
-    public void executeActionsForVerb(String verb){
-        if(actions.get(verb) == null) {}
-        else{
-            for(int i=0; i<actions.get(verb).size(); i++){
+
+    // Added changes for Weapons functionality
+    /**
+     * No specific changes were made to this base class for Weapons functionality.
+     * The Weapon subclass inherits all attributes and adds weapon-specific attributes.
+     * Weapon-specific logic is encapsulated in the Weapon class.
+     */
+
+    public void executeActionsForVerb(String verb) {
+        if (actions.get(verb) == null) {
+        } else {
+            for (int i = 0; i < actions.get(verb).size(); i++) {
                 String prefix = actions.get(verb).get(i).substring(0, 3);
-                //all of the item events have unique combinations of letters at the beginning.
-                //we can check these against a set and use a switch case instead of a
-                //less efficient if-else chain.
                 String fullAction = actions.get(verb).get(i);
-                switch(prefix){
-                    case "Sco": //Score(x) event
+                switch (prefix) {
+                    case "Sco":
                         int pointsToAdd = Integer.parseInt(fullAction.substring(
-                         (fullAction.indexOf("(") + 1), fullAction.indexOf(")")));
+                                (fullAction.indexOf("(") + 1), fullAction.indexOf(")")));
                         GameState.instance().addScore(pointsToAdd);
                         actions.get(verb).remove(i);
                         i--;
                         break;
-                        //actions can only add points once. repeated use will not grant more
-                        //points.
-                    case "Wou": //Wound(x) event
+                    case "Wou":
                         int damage = Integer.parseInt(fullAction.substring(
-                         (fullAction.indexOf("(") + 1), fullAction.indexOf(")")));
+                                (fullAction.indexOf("(") + 1), fullAction.indexOf(")")));
                         GameState.instance().woundPlayer(damage);
                         break;
-                        //unlike score events, you can continue to injure yourself
-                        //repeatedly. That edge isn't signficantly duller between individual cuts.
-                    case "Die": //Die event
+                    case "Die":
                         GameState.instance().killPlayer();
                         break;
-                    case "Win": //Win event
+                    case "Win":
                         GameState.instance().winGame();
                         break;
-                    case "Dro": //Drop event
-                        try{ //ignores the drop command if item isn't in your inventory.
+                    case "Dro":
+                        try {
                             GameState.instance().removeFromInventory(this);
                             GameState.instance().addItemToRoom(this,
-                             GameState.instance().getAdventurersCurrentRoom());
-                        } catch(Exception e){}
+                                    GameState.instance().getAdventurersCurrentRoom());
+                        } catch (Exception e) {
+                        }
                         break;
-                    case "Dis": //Disappear event
-                        try{
+                    case "Dis":
+                        try {
                             GameState.instance().removeFromInventory(this);
-                        } catch(Exception e){}
+                        } catch (Exception e) {
+                        }
                         GameState.instance().removeItemFromRoom(this,
-                         GameState.instance().getAdventurersCurrentRoom());
+                                GameState.instance().getAdventurersCurrentRoom());
                         break;
-                    case "Tra": //Transform event
+                    case "Tra":
                         String newName = fullAction.substring(fullAction.indexOf("(") + 1,
-                         fullAction.indexOf(")"));
+                                fullAction.indexOf(")"));
                         Item newItem = GameState.instance().getDungeon().getItem(newName);
-                        try{ //if the item is in the player's inventory, transform from there
+                        try {
                             GameState.instance().getItemFromInventoryNamed(this.primaryName);
                             GameState.instance().removeFromInventory(this);
                             int totalWeight = 0;
-                            for(int a=0; a<GameState.instance().getInventory().size(); a++){
+                            for (int a = 0; a < GameState.instance().getInventory().size(); a++) {
                                 totalWeight += GameState.instance().getInventory().get(a).getWeight();
                             }
-                            if(totalWeight + newItem.getWeight() > 40){
+                            if (totalWeight + newItem.getWeight() > 40) {
                                 GameState.instance().addItemToRoom(newItem, GameState.instance()
-                                 .getAdventurersCurrentRoom());
-                            }
-                            else{
+                                        .getAdventurersCurrentRoom());
+                            } else {
                                 GameState.instance().addToInventory(newItem);
                             }
-                        } catch(Exception e){ //if the item is in the room, transform from there
+                        } catch (Exception e) {
                             GameState.instance().removeItemFromRoom(this, GameState.instance()
-                             .getAdventurersCurrentRoom());
+                                    .getAdventurersCurrentRoom());
                             GameState.instance().addItemToRoom(newItem, GameState.instance()
-                             .getAdventurersCurrentRoom());
+                                    .getAdventurersCurrentRoom());
                         }
                         break;
-                    case "Tel": //Teleport event
-                        Hashtable<String,Room> allRooms = 
-                         GameState.instance().getDungeon().getRooms();
+                    case "Tel":
+                        Hashtable<String, Room> allRooms =
+                                GameState.instance().getDungeon().getRooms();
                         int shuffle = (int) (GameState.instance().getRandom() * allRooms.size());
                         String dest = "";
                         Iterator<String> iter = allRooms.keySet().iterator();
-                        for(int a=0; a<=shuffle; a++){
+                        for (int a = 0; a <= shuffle; a++) {
                             dest = iter.next();
                         }
                         GameState.instance()
-                         .setAdventurersCurrentRoom(allRooms.get(dest));
+                                .setAdventurersCurrentRoom(allRooms.get(dest));
                         GameState.instance().visit(allRooms.get(dest));
                         break;
                     default:
                         System.out.println("error.");
-                        for(int a=0; i<actions.get(verb).size(); i++){
+                        for (int a = 0; i < actions.get(verb).size(); a++) {
                             System.out.println(actions.get(verb).get(a));
                         }
                 }
             }
-
-        }    
+        }
     }
 }
