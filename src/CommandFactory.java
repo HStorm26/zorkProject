@@ -43,25 +43,32 @@ public class CommandFactory {
             case "i":
             case "inventory":
                 return new InventoryCommand();
+
             case "score":
                 return new ScoreCommand();
+
             case "health":
                 return new HealthCommand();
+
             case "buy":
                 return new BuyCommand(checkForArgs(commands));
+
             case "sell":
                 return new SellCommand(checkForArgs(commands));
+
             case "haggle":
             case "bargain":
                 return new HaggleCommand();
-            default:
-                if(!checkForArgs(commands).equals("")){
 
-                return new ItemSpecificCommand(c,checkForArgs(commands));
-                
+            case "attack": // New case for the attack command
+                return new AttackCommand(checkForArgs(commands)); // Passes the target name to AttackCommand
+
+            default:
+                if (!checkForArgs(commands).equals("")) {
+                    return new ItemSpecificCommand(c, checkForArgs(commands));
+                } else {
+                    return new UnknownCommand(c);
                 }
-                else{return new UnknownCommand(c);}
-      
         }
     }
 
