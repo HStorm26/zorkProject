@@ -1,0 +1,40 @@
+Weapon testing!!
+Zork++
+===
+Items:
+potion
+7
+examine:its got a red liquid inside of it.
+drink[Wound(-10),Transform(Empty Bottle)]:yum!
+---
+Empty Bottle,bottle
+3
+examine:it's a bottle.
+---
+===
+Weapons:
+sword
+15
+examine:yup, still here.
+swing[Wound(5)]:You flail wildly and end up dropping the sword on your foot.
+---
+Damage=5
+Hit Chance=.5
+Crit Chance=.5
+---
+===
+Rooms:
+Room one
+Contents: potion,sword
+you really don't need any other rooms for this one.
+---
+Room two
+just so there's at least one exit.
+---
+===
+Exits:
+Room two
+u
+Room one
+---
+===
