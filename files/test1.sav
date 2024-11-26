@@ -1,0 +1,19 @@
+Zork III save data
+Dungeon file: ../files/starwars.zork
+Room states:
+Ben Kenobi's Hut:
+beenHere=true
+Contents: 
+---
+Mos Eisley Spaceport:
+beenHere=true
+Contents: stormtrooper_helmet
+---
+Jawa Sandcrawler:
+beenHere=true
+Contents: jawa_cloak
+---
+===
+Adventurer:
+Current room: Jawa Sandcrawler
+Inventory: kenobi_lightsaber,Inventory: kenobi_lightsaber,c3po,Inventory: kenobi_lightsaber,c3po,r2d2,
