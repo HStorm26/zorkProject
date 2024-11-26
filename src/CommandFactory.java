@@ -39,6 +39,8 @@ public class CommandFactory {
 
             case "look":
                 return new LookCommand();
+            case "attack":
+                return new AttackCommand(checkForArgs(commands));
 
             case "i":
             case "inventory":

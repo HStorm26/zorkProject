@@ -26,6 +26,7 @@ public class GameState {
     private Random randomNumber;
     private ArrayList<Item> inventory;
     private Hashtable<Room, HashSet<Item>> roomContents;
+    private ArrayList<Enemy> enemies;
 
     static synchronized GameState instance() {
         if (theInstance == null) {
@@ -35,16 +36,17 @@ public class GameState {
     }
 
     private GameState() {
+        this.enemies = new ArrayList<Enemy>();
         this.visitedRooms = new HashSet<Room>();
-        this.inventory = new ArrayList<Item>(); // Initialize the inventory here
-        this.roomContents = new Hashtable<>(); // Initialize roomContents
+        this.inventory = new ArrayList<Item>();
+        this.roomContents = new Hashtable<>();
         this.score = 0;
         this.money = 0;
         this.health = 100;
         this.hasWon = false;
     }
 
-    void restore(String filename) throws FileNotFoundException, IllegalSaveFormatException, Dungeon.IllegalDungeonFormatException {
+    void restore(String filename) throws NoEnemyException, FileNotFoundException, IllegalSaveFormatException, Dungeon.IllegalDungeonFormatException {
         Scanner s = new Scanner(new FileReader(filename));
 
         if (!s.nextLine().equals("Zork++ save data")) {
@@ -67,30 +69,33 @@ public class GameState {
                 this.visitedRooms.add(dungeon.getRoom(next));
             }
             String contents = s.nextLine();
-            // Restore item that was in room at save-time 
             if (contents.startsWith("Contents:")) {
-                //clears the rooms if there's any data on their contents.
                 this.getItemsInRoom(this.getDungeon().getRoom(next)).clear();
                 contents = contents.substring("Contents: ".length());
                 String[] roomItems = contents.split(",");
-                for(int i=0; i<roomItems.length; i++){
-                    if(roomItems[i].isEmpty()){
+                for (int i = 0; i < roomItems.length; i++) {
+                    if (roomItems[i].isEmpty()) {
                         break;
                     }
-
                     this.addItemToRoom(
-                    this.getDungeon().getItem(roomItems[i]),
-                    this.getDungeon().getRoom(next));
-                    
-                    
+                        this.getDungeon().getItem(roomItems[i]),
+                        this.getDungeon().getRoom(next));
                 }
-                //removes items from the requisite locations.
-                
-
-                s.nextLine(); //throw away "---"
+                String enemyLine = s.nextLine();
+                if (enemyLine.startsWith("Enemies: ")) {
+                    String enemyContents = enemyLine.substring("Enemies: ".length());
+                    String[] roomEnemies = enemyContents.split(",");
+                    for (int i = 0; i < roomEnemies.length; i++) {
+                        if (roomEnemies[i].isEmpty()) {
+                            break;
+                        }
+                        this.addEnemyToRoom(this.getDungeon().getEnemy(roomEnemies[i]), this.getDungeon().getRoom(next));
+                    }
+                }
+                s.nextLine(); // throw away "---"
             }
             next = s.nextLine();
-            if(!next.equals("===")){
+            if (!next.equals("===")) {
                 next = next.substring(0, next.indexOf(":"));
             }
         }
@@ -99,10 +104,9 @@ public class GameState {
         next = s.nextLine();
         adventurersCurrentRoom = dungeon.getRoom(next.substring("Current room: ".length()));
 
-        // New inventory to current room 
         inventory = new ArrayList<Item>();
         next = s.nextLine();
-        if(next.startsWith("Inventory:")){
+        if (next.startsWith("Inventory:")) {
             try {
                 String playerInventory = next;
                 playerInventory = playerInventory.substring("Inventory: ".length());
@@ -110,14 +114,13 @@ public class GameState {
                 for (String inventoryItem : inventoryItems) {
                     this.addToInventory(dungeon.getItem(inventoryItem.strip()));
                     Iterator<Room> iterator = roomContents.keySet().iterator();
-                    while(iterator.hasNext()){
+                    while (iterator.hasNext()) {
                         Room inventoryRoom = iterator.next();
                         roomContents.get(inventoryRoom).remove(
-                         this.getDungeon().getItem(inventoryItem.strip()));
+                            this.getDungeon().getItem(inventoryItem.strip()));
                     }
                 }
             } catch (Exception e) {}
-
             next = s.nextLine();
         }
         this.health = Integer.parseInt(next.substring("Current health: ".length()));
@@ -128,7 +131,6 @@ public class GameState {
     }
 
     void store(String saveName) throws IOException {
-
         String filename = this.getFullSaveName(saveName);
         PrintWriter w = new PrintWriter(new FileWriter(filename));
         w.println("Zork++ save data");
@@ -140,10 +142,20 @@ public class GameState {
             w.println("beenHere=true");
             w.print("Contents: ");
             Iterator<Item> iterator = this.roomContents.get(visitedRoom).iterator();
-            while(iterator.hasNext()){
+            while (iterator.hasNext()) {
                 Item item = iterator.next();
                 w.print(item.getPrimaryName());
-                if(iterator.hasNext()){
+                if (iterator.hasNext()) {
+                    w.print(",");
+                }
+            }
+            w.print("\n");
+            w.print("Enemies: ");
+            Iterator<Enemy> enemyIterator = visitedRoom.getAllEnemies().iterator();
+            while (enemyIterator.hasNext()) {
+                Enemy e = enemyIterator.next();
+                w.print(e.getName());
+                if (enemyIterator.hasNext()) {
                     w.print(",");
                 }
             }
@@ -158,9 +170,9 @@ public class GameState {
             String inventoryList = "Inventory: ";
             for (Item item : inventory) {
                 inventoryList += (item.getPrimaryName() + ",");
-                inventoryList = inventoryList.substring(0, inventoryList.length());
-                w.println(inventoryList);
             }
+            inventoryList = inventoryList.substring(0, inventoryList.length() - 1);
+            w.println(inventoryList);
         }
         w.println("Current health: " + this.health);
         w.println("Current score: " + this.score);
@@ -196,7 +208,7 @@ public class GameState {
         return dungeon;
     }
 
-    void setDungeon(Dungeon dungeon){
+    void setDungeon(Dungeon dungeon) {
         this.dungeon = dungeon;
     }
 
@@ -212,9 +224,9 @@ public class GameState {
         return this.inventory;
     }
 
-    int getInventoryWeight(){
+    int getInventoryWeight() {
         int totalWeight = 0;
-        for(Item nextItem : this.inventory){
+        for (Item nextItem : this.inventory) {
             totalWeight += nextItem.getWeight();
         }
         return totalWeight;
@@ -230,13 +242,10 @@ public class GameState {
 
     Item getItemInVicinityNamed(String name) throws NoItemException {
         Item result = null;
-   
         HashSet<Item> hash = this.getItemsInRoom(this.adventurersCurrentRoom);
-
         for (Item item : hash) {
-            if(item.goesBy(name)){
+            if (item.goesBy(name)) {
                 result = item;
-
             }
         }
         if (result == null) {
@@ -246,9 +255,9 @@ public class GameState {
                 }
             }
         }
-       if (result == null) {
-         throw new NoItemException();
-       }
+        if (result == null) {
+            throw new NoItemException();
+        }
         return result;
     }
 
@@ -262,7 +271,6 @@ public class GameState {
     }
 
     HashSet<Item> getItemsInRoom(Room room) {
-        // Ensure roomContents is initialized properly for each room
         if (!roomContents.containsKey(room)) {
             roomContents.put(room, new HashSet<Item>());
         }
@@ -282,54 +290,60 @@ public class GameState {
         }
     }
 
-    void addScore(int points){
+    void addScore(int points) {
         this.score += points;
     }
-    
-    int getScore(){
+
+    int getScore() {
         return score;
     }
 
-    void woundPlayer(int damage){
+    void woundPlayer(int damage) {
         this.health -= damage;
-        if(health <= 0){
+        if (health <= 0) {
             this.killPlayer();
         }
-        if(health > 100){
+        if (health > 100) {
             this.health = 100;
         }
     }
 
-    int getHealth(){
+    int getHealth() {
         return health;
     }
-    boolean checkIfDead(){
-        if(health <= 0){
+
+    boolean checkIfDead() {
+        if (health <= 0) {
             return true;
+        } else {
+            return false;
         }
-        else{ return false; }
     }
-    void killPlayer(){
+
+    void killPlayer() {
         this.health = 0;
     }
-    boolean checkIfWon(){
+
+    boolean checkIfWon() {
         return hasWon;
     }
-    void winGame(){
+
+    void winGame() {
         this.hasWon = true;
     }
-    public double getRandom(){ //public so we can do randomness everywhere
-       if(randomNumber == null){
+
+    public double getRandom() {
+        if (randomNumber == null) {
             randomNumber = new Random(12);
-       }
-       return randomNumber.nextDouble();
+        }
+        return randomNumber.nextDouble();
     }
 
-    int getMoney(){
-        return this.money;
+    public void addEnemy(Enemy enemy) {
+        this.enemies.add(enemy);
     }
 
-    void addMoney(int addition){
-        this.money += addition;
+    public void addEnemyToRoom(Enemy enemy, Room room) {
+        room.addEnemy(enemy);
     }
 }

@@ -1,6 +1,6 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.HashSet;
+import java.util.Scanner;
 
 public class Room {
     public static class NoRoomException extends Exception {}
@@ -9,15 +9,19 @@ public class Room {
     private String desc;
     private ArrayList<Exit> exits;
     private Shop shop;
+    private HashSet<Enemy> enemies;
 
     public Room(String name) {
         this.name = name;
         this.exits = new ArrayList<>();
+        this.shop = null;
+        this.enemies = new HashSet<>();
     }
 
     public Room(Scanner s) throws NoRoomException, Dungeon.IllegalDungeonFormatException {
         this.exits = new ArrayList<>();
         this.shop = null;
+        this.enemies = new HashSet<>();
         name = s.nextLine();
         desc = "";
         if (name.equals("===")) {
@@ -25,17 +29,27 @@ public class Room {
         }
 
         String lineOfDesc = s.nextLine();
-        if(lineOfDesc.startsWith("Contents: ")){
+        if (lineOfDesc.startsWith("Contents: ")) {
             String[] items = lineOfDesc.substring("Contents: ".length()).split(",");
-            for(int i=0; i<items.length; i++){
+            for (int i = 0; i < items.length; i++) {
                 this.add(GameState.instance().getDungeon().getItem(items[i]));
             }
             lineOfDesc = s.nextLine();
         }
-        if(lineOfDesc.startsWith("Shop: ")){
+
+        if (lineOfDesc.startsWith("Shop: ")) {
             this.shop = new Shop(lineOfDesc.substring("Shop: ".length()));
             lineOfDesc = s.nextLine();
         }
+
+        if (lineOfDesc.startsWith("Enemies: ")) {
+            String[] enemyList = lineOfDesc.substring("Enemies: ".length()).split(",");
+            for (int i = 0; i < enemyList.length; i++) {
+                this.addEnemy(GameState.instance().getDungeon().getEnemy(enemyList[i]));
+            }
+            lineOfDesc = s.nextLine();
+        }
+
         while (!lineOfDesc.equals("---") && !lineOfDesc.equals("===")) {
             desc += lineOfDesc + "\n";
             lineOfDesc = s.nextLine();
@@ -54,34 +68,38 @@ public class Room {
         this.desc = desc;
     }
 
-    // Called when entering the room
     public String describeOnEntry() {
         String description;
         HashSet<Item> items = this.getContents();
         if (GameState.instance().hasBeenVisited(this)) {
-            description = this.name;  // Only show room name after the first visit
+            description = this.name;
         } else {
-            description = this.name + "\n" + this.desc + "\n";  // Full description on first entry
+            description = this.name + "\n" + this.desc + "\n";
         }
         for (Item item : items) {
             description += "\nThere is a " + item + " here.";
         }
-        if(this.shop != null){
+        if (this.shop != null) {
             description += this.shop.describe();
+        }
+        for (Enemy e : this.enemies) {
+            description += "\nThere is a " + e + " here.";
         }
         for (Exit exit : this.exits) {
             description += "\n" + exit.describe();
         }
-        GameState.instance().visit(this);  // Mark the room as visited
+        GameState.instance().visit(this);
         return description + "\n";
     }
 
-    // Called by the "look" command
     public String describeFull() {
-        String description = this.name + "\n" + this.desc + "\n";  // Full description regardless of visit status
+        String description = this.name + "\n" + this.desc + "\n";
         HashSet<Item> items = this.getContents();
         for (Item item : items) {
             description += "\nThere is a " + item + " here.";
+        }
+        for (Enemy e : this.enemies) {
+            description += "\nThere is a " + e + " here.";
         }
         for (Exit exit : this.exits) {
             description += "\n" + exit.describe();
@@ -123,10 +141,38 @@ public class Room {
         }
         return null;
     }
-    public Shop getShop() throws Shop.NoShopException{
-        if(this.shop == null){
+
+    public Shop getShop() throws Shop.NoShopException {
+        if (this.shop == null) {
             throw new Shop.NoShopException();
         }
         return this.shop;
+    }
+
+    public void addEnemy(Enemy enemy) {
+        this.enemies.add(enemy);
+    }
+
+    public void removeEnemy(Enemy enemy) throws NoEnemyException {
+        if (!this.enemies.remove(enemy)) {
+            throw new NoEnemyException();
+        }
+    }
+
+    public Enemy getEnemyNamed(String enemyName) throws NoEnemyException {
+        for (Enemy e : this.enemies) {
+            if (e.getName().equals(enemyName)) {
+                return e;
+            }
+        }
+        throw new NoEnemyException();
+    }
+
+    public HashSet<Enemy> getAllEnemies() {
+        return this.enemies;
+    }
+
+    public String toString() {
+        return this.name;
     }
 }
