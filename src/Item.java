@@ -55,7 +55,8 @@ public class Item {
                 }
                 next = s.nextLine();
             }
-        } else {
+        } 
+        else {
             throw new NoItemException();
         }
     }

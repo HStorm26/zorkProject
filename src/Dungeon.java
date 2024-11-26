@@ -63,10 +63,23 @@ public class Dungeon {
         } catch (NoItemException e) {
             // End of items
         }
+        
+        // Weapons section
 
-        // Enemies section
         moneyName = s.nextLine();
+        if(moneyName.equals("Weapons:")){
 
+            try{
+                while(true){
+                    Weapon newWeapon = new Weapon(s);
+                    add(newWeapon);
+                }
+            }catch(Exception e){ //end of weapons 
+            }
+            moneyName = s.nextLine();
+        }
+        // Enemies section
+        
         if (moneyName.equals("Enemies:")) {
             try {
                 while (true) {

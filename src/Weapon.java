@@ -5,13 +5,13 @@ public class Weapon extends Item {
     private double hitChance;
     private double critChance;
 
-    public Weapon(Scanner s) throws NoItemException {
+    public Weapon(Scanner s) throws NoItemException {        
         super(s);
         this.damage = Integer.parseInt(s.nextLine().substring("Damage=".length()));
         this.hitChance = Double.parseDouble(s.nextLine().substring("Hit Chance=".length()));
         this.critChance = Double.parseDouble(s.nextLine().substring("Crit Chance=".length()));
+        s.nextLine(); //throw away "---"
     }
-
     public int getDamage() {
         return damage;
     }
