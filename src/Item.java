@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Iterator;
 
 public class Item {
 
@@ -92,39 +93,34 @@ public class Item {
         return price * 2;
     }
 
-    // Added changes for Weapons functionality
-    /**
-     * No specific changes were made to this base class for Weapons functionality.
-     * The Weapon subclass inherits all attributes and adds weapon-specific attributes.
-     * Weapon-specific logic is encapsulated in the Weapon class.
-     */
-
     public void executeActionsForVerb(String verb) {
         if (actions.get(verb) == null) {
         } else {
             for (int i = 0; i < actions.get(verb).size(); i++) {
                 String prefix = actions.get(verb).get(i).substring(0, 3);
                 String fullAction = actions.get(verb).get(i);
+                //takes the first three letters of each possible action and uses that for the switch.
                 switch (prefix) {
-                    case "Sco":
+                    case "Sco": //Scoring points
                         int pointsToAdd = Integer.parseInt(fullAction.substring(
                                 (fullAction.indexOf("(") + 1), fullAction.indexOf(")")));
                         GameState.instance().addScore(pointsToAdd);
                         actions.get(verb).remove(i);
                         i--;
+                        //repeating an action will not gain more points.
                         break;
-                    case "Wou":
+                    case "Wou": //Wounding (or healing) the player
                         int damage = Integer.parseInt(fullAction.substring(
                                 (fullAction.indexOf("(") + 1), fullAction.indexOf(")")));
                         GameState.instance().woundPlayer(damage);
                         break;
-                    case "Die":
+                    case "Die": //Killing the player
                         GameState.instance().killPlayer();
                         break;
-                    case "Win":
+                    case "Win": //Winning the game
                         GameState.instance().winGame();
                         break;
-                    case "Dro":
+                    case "Dro": //Drops the item.
                         try {
                             GameState.instance().removeFromInventory(this);
                             GameState.instance().addItemToRoom(this,
@@ -132,7 +128,7 @@ public class Item {
                         } catch (Exception e) {
                         }
                         break;
-                    case "Dis":
+                    case "Dis": //makes the item disappear.
                         try {
                             GameState.instance().removeFromInventory(this);
                         } catch (Exception e) {
@@ -140,7 +136,7 @@ public class Item {
                         GameState.instance().removeItemFromRoom(this,
                                 GameState.instance().getAdventurersCurrentRoom());
                         break;
-                    case "Tra":
+                    case "Tra": //changes the item into a different item.
                         String newName = fullAction.substring(fullAction.indexOf("(") + 1,
                                 fullAction.indexOf(")"));
                         Item newItem = GameState.instance().getDungeon().getItem(newName);
@@ -164,7 +160,7 @@ public class Item {
                                     .getAdventurersCurrentRoom());
                         }
                         break;
-                    case "Tel":
+                    case "Tel": //chooses a random room to move the player to.
                         Hashtable<String, Room> allRooms =
                                 GameState.instance().getDungeon().getRooms();
                         int shuffle = (int) (GameState.instance().getRandom() * allRooms.size());
@@ -177,7 +173,7 @@ public class Item {
                                 .setAdventurersCurrentRoom(allRooms.get(dest));
                         GameState.instance().visit(allRooms.get(dest));
                         break;
-                    default:
+                    default: //I don't know how you got here but you're in trouble if you did.
                         System.out.println("error.");
                         for (int a = 0; i < actions.get(verb).size(); a++) {
                             System.out.println(actions.get(verb).get(a));
