@@ -81,18 +81,24 @@ public class GameState {
                         this.getDungeon().getItem(roomItems[i]),
                         this.getDungeon().getRoom(next));
                 }
-                String enemyLine = s.nextLine();
-                if (enemyLine.startsWith("Enemies: ")) {
-                    String enemyContents = enemyLine.substring("Enemies: ".length());
-                    String[] roomEnemies = enemyContents.split(",");
-                    for (int i = 0; i < roomEnemies.length; i++) {
-                        if (roomEnemies[i].isEmpty()) {
-                            break;
-                        }
-                        this.addEnemyToRoom(this.getDungeon().getEnemy(roomEnemies[i]), this.getDungeon().getRoom(next));
+                contents = s.nextLine(); // throw away "---" OR move to enemies/shop contents
+            }
+            if (contents.startsWith("Enemies: ")) {
+                String enemyContents = contents.substring("Enemies: ".length());
+                String[] roomEnemies = enemyContents.split(",");
+                for (int i = 0; i < roomEnemies.length; i++) {
+                    if (roomEnemies[i].isEmpty()) {
+                        break;
                     }
+                    this.addEnemyToRoom(this.getDungeon().getEnemy(roomEnemies[i]), this.getDungeon().getRoom(next));
                 }
-                s.nextLine(); // throw away "---"
+                contents = s.nextLine(); // throw away "---" OR move to shop contents
+            }
+            if(contents.startsWith("Shop:")){
+                try{
+                    this.getDungeon().getRoom(next).getShop().addItemsFromSave(contents);
+                }catch(Exception e){}
+                s.nextLine(); //throw away "---"
             }
             next = s.nextLine();
             if (!next.equals("===")) {
@@ -159,6 +165,17 @@ public class GameState {
                     w.print(",");
                 }
             }
+            try{
+                iterator = visitedRoom.getShop().getContents().iterator();
+                w.print("\nShop: ");
+                while(iterator.hasNext()){
+                    Item item = iterator.next();
+                    w.print(item.getPrimaryName());
+                    if(iterator.hasNext()){
+                        w.print(",");
+                    }
+                }
+            }catch(Exception e){}
             w.print("\n");
             w.println("---");
         }
@@ -337,6 +354,14 @@ public class GameState {
             randomNumber = new Random(12);
         }
         return randomNumber.nextDouble();
+    }
+    
+    int getMoney(){
+        return this.money;
+    }
+
+    void addMoney(int c){
+        this.money += c;
     }
 
     public void addEnemy(Enemy enemy) {

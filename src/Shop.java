@@ -55,6 +55,17 @@ public class Shop {
         }
         return null;
     }
+    HashSet<Item> getContents(){
+        return this.contents;
+    }
+    void addItemsFromSave(String items){
+        this.contents.clear();
+        items = items.substring("Shop: ".length());
+        String[] list = items.split(",");
+        for(int i=0; i<list.length; i++){
+            this.contents.add(GameState.instance().getDungeon().getItem(list[i]));
+        }
+    }
     void sellItemToPlayer(Item item){
         int price = item.getPriceFromShop();
         if(this.isHaggled){

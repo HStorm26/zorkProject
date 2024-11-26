@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Weapon extends Item {
     private int damage;
     private double hitChance;

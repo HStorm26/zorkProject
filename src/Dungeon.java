@@ -1,6 +1,7 @@
 import java.util.Hashtable;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 public class Dungeon {
     public static class IllegalDungeonFormatException extends Exception {
@@ -64,21 +65,22 @@ public class Dungeon {
         }
 
         // Enemies section
-        if (!s.nextLine().equals("Enemies:")) {
-            throw new IllegalDungeonFormatException("No 'Enemies:' line where expected.");
-        }
+        moneyName = s.nextLine();
 
-        try {
-            while (true) {
-                Enemy newEnemy = new Enemy(s);
-                add(newEnemy);
+        if (moneyName.equals("Enemies:")) {
+            try {
+                while (true) {
+                    Enemy newEnemy = new Enemy(s);
+                    add(newEnemy);
+                }
+            } catch (NoEnemyException e) {
+                // End of enemies
             }
-        } catch (NoEnemyException e) {
-            // End of enemies
+            moneyName = s.nextLine();
         }
 
         // Rooms section
-        if (!s.nextLine().equals("Rooms:")) {
+        if (!moneyName.equals("Rooms:")) {
             throw new IllegalDungeonFormatException("No 'Rooms:' line where expected.");
         }
 
@@ -94,9 +96,9 @@ public class Dungeon {
         } catch (Room.NoRoomException e) {
             // End of rooms
         }
-
+        moneyName = s.nextLine();
         // Exits section
-        if (!s.nextLine().equals("Exits:")) {
+        if (!moneyName.equals("Exits:")) {
             throw new IllegalDungeonFormatException("No 'Exits:' line where expected.");
         }
 
