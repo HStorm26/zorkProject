@@ -87,6 +87,12 @@ public class GameState {
                 //removes items from the requisite locations.
                 
 
+                contents = s.nextLine(); //throw away "---" OR move to shop contents
+            }
+            if(contents.startsWith("Shop:")){
+                try{
+                    this.getDungeon().getRoom(next).getShop().addItemsFromSave(contents);
+                }catch(Exception e){}
                 s.nextLine(); //throw away "---"
             }
             next = s.nextLine();
@@ -147,6 +153,17 @@ public class GameState {
                     w.print(",");
                 }
             }
+            try{
+                iterator = visitedRoom.getShop().getContents().iterator();
+                w.print("\nShop: ");
+                while(iterator.hasNext()){
+                    Item item = iterator.next();
+                    w.print(item.getPrimaryName());
+                    if(iterator.hasNext()){
+                        w.print(",");
+                    }
+                }
+            }catch(Exception e){}
             w.print("\n");
             w.println("---");
         }
