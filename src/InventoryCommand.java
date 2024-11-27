@@ -13,6 +13,9 @@ class InventoryCommand extends Command {
 
         StringBuilder inventoryList = new StringBuilder("You are carrying:\n");
         for (Item item : GameState.instance().getInventory()) {
+            if(item == GameState.instance().getActiveWeapon()){
+                inventoryList.append("(Equipped) ");
+            }
             inventoryList.append(item.getPrimaryName()).append("\n");
         }
         if(GameState.instance().getDungeon().hasShops()){

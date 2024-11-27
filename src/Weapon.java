@@ -1,6 +1,9 @@
 import java.util.Scanner;
 
 public class Weapon extends Item {
+
+    class NoWeaponException extends Exception {}
+    
     private int damage;
     private double hitChance;
     private double critChance;

@@ -62,6 +62,9 @@ public class CommandFactory {
             case "attack": // New case for the attack command
                 return new AttackCommand(checkForArgs(commands)); // Passes the target name to AttackCommand
 
+            case "equip":
+            case "unequip":
+                return new EquipCommand(c, checkForArgs(commands));
             default:
                 if (!checkForArgs(commands).equals("")) {
                     return new ItemSpecificCommand(c, checkForArgs(commands));

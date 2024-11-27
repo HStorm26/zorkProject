@@ -16,6 +16,7 @@ public class Dungeon {
     private Hashtable<String, Room> rooms;
     private Hashtable<String, Item> items;
     private boolean hasShops = false;
+    private boolean hasWeapons = false;
     private Hashtable<String, Enemy> enemies;
 
     Dungeon(String title, Room entry) {
@@ -68,7 +69,7 @@ public class Dungeon {
 
         moneyName = s.nextLine();
         if(moneyName.equals("Weapons:")){
-
+            hasWeapons = true;
             try{
                 while(true){
                     Weapon newWeapon = new Weapon(s);
@@ -172,5 +173,8 @@ public class Dungeon {
 
     public boolean hasShops() {
         return this.hasShops;
+    }
+    public boolean hasWeapons() {
+        return this.hasWeapons();
     }
 }

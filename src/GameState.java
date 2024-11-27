@@ -27,6 +27,7 @@ public class GameState {
     private ArrayList<Item> inventory;
     private Hashtable<Room, HashSet<Item>> roomContents;
     private ArrayList<Enemy> enemies;
+    private Weapon activeWeapon;
 
     static synchronized GameState instance() {
         if (theInstance == null) {
@@ -44,6 +45,7 @@ public class GameState {
         this.money = 0;
         this.health = 100;
         this.hasWon = false;
+        this.activeWeapon = null;
     }
 
     void restore(String filename) throws NoEnemyException, FileNotFoundException, IllegalSaveFormatException, Dungeon.IllegalDungeonFormatException {
@@ -371,4 +373,12 @@ public class GameState {
     public void addEnemyToRoom(Enemy enemy, Room room) {
         room.addEnemy(enemy);
     }
+
+    Weapon getActiveWeapon(){
+        return this.activeWeapon;
+    }
+    void setActiveWeapon(Weapon w) {
+        this.activeWeapon = w;
+    }
+
 }
