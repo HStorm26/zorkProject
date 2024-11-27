@@ -136,6 +136,9 @@ public class GameState {
         this.score = Integer.parseInt(next.substring("Current score: ".length()));
         next = s.nextLine();
         this.money = Integer.parseInt(next.substring("Current money: ".length()));
+        next = s.nextLine();
+        next = next.substring("Equipped weapon: ".length());
+        this.activeWeapon = (Weapon) this.getDungeon().getItem(next);
     }
 
     void store(String saveName) throws IOException {
@@ -196,6 +199,7 @@ public class GameState {
         w.println("Current health: " + this.health);
         w.println("Current score: " + this.score);
         w.println("Current money: " + this.money);
+        w.println("Equipped weapon: " + this.activeWeapon.getPrimaryName());
         w.flush();
         w.close();
     }
@@ -256,6 +260,9 @@ public class GameState {
     }
 
     void removeFromInventory(Item item) {
+        if(item == this.activeWeapon){
+            this.setActiveWeapon(null);
+        }
         this.inventory.remove(item);
     }
 
