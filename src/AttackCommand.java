@@ -1,6 +1,3 @@
-
-
-
 class AttackCommand extends Command{
 
     private String enemyName;
@@ -10,30 +7,20 @@ class AttackCommand extends Command{
     }
 
     String execute(){
-
-        if(enemyName.equals("")){
-            return "attack what?\n";
-        }
-        Weapon currentWeapon = null;
-        Enemy CurrentEnemy = null;
-
-        GameState g = GameState.instance();
-        
+        Enemy en;
+        Weapon w;
         try{
-        Weapon currentWeapon = g.getEquippedWeapon();
+            en = GameState.instance().getAdventurersCurrentRoom().getEnemyNamed(this.enemyName);
+        }catch(Exception e){
+            return "There's no " + this.enemyName + " here!\n";
         }
-        catch(NoWeaponException e){}
-
-        Room current = g.getAdventurersCurrentRoom();
         try{
-        Enemy currentEnemy = current.getEnemyNamed(this.enemyName);
+            w = GameState.instance().getActiveWeapon();
+        }catch(Exception e){
+            return "You don't have a weapon to attack with!\n";
         }
-        catch(NoEnemyException e){}
-
-        String makeAttack = currentWeapon.makeAttack(currentEnemy);
-
-        return makeAttack;
-
+        String output = w.attack(en);
+        output += en.checkIfDead();
+        return output;
     }
-
 }

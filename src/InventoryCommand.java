@@ -13,7 +13,13 @@ class InventoryCommand extends Command {
 
         StringBuilder inventoryList = new StringBuilder("You are carrying:\n");
         for (Item item : GameState.instance().getInventory()) {
-            if(item == GameState.instance().getActiveWeapon()){
+            Weapon w;
+            try{
+                w = GameState.instance().getActiveWeapon();
+            }catch(Exception e){
+                w = null;
+            }
+            if(item == w){
                 inventoryList.append("(Equipped) ");
             }
             inventoryList.append(item.getPrimaryName()).append("\n");

@@ -9,7 +9,12 @@ class EquipCommand extends Command{
     }
 
     String execute(){
-        Weapon w = GameState.instance().getActiveWeapon();
+        Weapon w;
+        try{
+            w = GameState.instance().getActiveWeapon();
+        }catch(Exception e){
+            w = null;
+        }
         if(action.equals("unequip")){
             if(w != null){
                 String wN = w.getPrimaryName();

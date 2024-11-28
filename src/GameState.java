@@ -381,7 +381,10 @@ public class GameState {
         room.addEnemy(enemy);
     }
 
-    Weapon getActiveWeapon(){
+    Weapon getActiveWeapon() throws NoItemException{
+        if(this.activeWeapon == null){
+            throw new NoItemException();
+        }
         return this.activeWeapon;
     }
     void setActiveWeapon(Weapon w) {
