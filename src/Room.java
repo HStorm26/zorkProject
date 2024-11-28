@@ -82,8 +82,12 @@ public class Room {
         if (this.shop != null) {
             description += this.shop.describe();
         }
-        for (Enemy e : this.enemies) {
-            description += "\nThere is a " + e + " here.";
+        if (!this.enemies.isEmpty()){
+            description += "\nLook out! There are enemies here!";
+            for (Enemy e : this.enemies) {
+                description += "\nThere is a " + e + " here!";
+            }
+            description += "\n";
         }
         for (Exit exit : this.exits) {
             description += "\n" + exit.describe();
@@ -98,8 +102,12 @@ public class Room {
         for (Item item : items) {
             description += "\nThere is a " + item + " here.";
         }
-        for (Enemy e : this.enemies) {
-            description += "\nThere is a " + e + " here.";
+        if (!this.enemies.isEmpty()){
+            description += "\nLook out! There are enemies here!";
+            for (Enemy e : this.enemies) {
+                description += "\nThere is a " + e + " here!";
+            }
+            description += "\n";
         }
         for (Exit exit : this.exits) {
             description += "\n" + exit.describe();
