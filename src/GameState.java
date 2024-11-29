@@ -412,4 +412,13 @@ public class GameState {
         }
         return inCombat;
     }
+    void passiveEnemyHeal(Hashtable<String,Enemy> ht){
+        if(!inCombat){    
+            Iterator<String> iter = ht.keySet().iterator();
+            while(iter.hasNext()){
+                String key = iter.next();
+                ht.get(key).takeDamage(-1);
+            }
+        }
+    }
 }

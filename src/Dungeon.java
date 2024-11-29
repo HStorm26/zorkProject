@@ -177,4 +177,7 @@ public class Dungeon {
     public boolean hasWeapons() {
         return this.hasWeapons();
     }
+    Hashtable<String,Enemy> getAllEnemies(){
+        return this.enemies;
+    }
 }

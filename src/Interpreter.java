@@ -70,6 +70,9 @@ public class Interpreter {
                 if(!command.equals("q")){
                     command = promptUser(commandLine);
                 }
+                if(!command.startsWith("save")){
+                    GameState.instance().passiveEnemyHeal(GameState.instance().getDungeon().getAllEnemies());
+                }
             }
             if(command.equals("q")){
                 System.out.println("Bye!");
