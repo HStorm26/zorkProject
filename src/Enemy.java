@@ -52,6 +52,12 @@ public class Enemy{
         }
         return "\n" + this.missMessage;
     }
+    int getHealth(){
+        return this.health;
+    }
+    void setHealth(int h){
+        this.health = h;
+    }
     void takeDamage(int damage){
         this.health-=damage;
         if(this.maxHealth < this.health){

@@ -60,10 +60,12 @@ public class Shop {
     }
     void addItemsFromSave(String items){
         this.contents.clear();
-        items = items.substring("Shop: ".length());
-        String[] list = items.split(",");
-        for(int i=0; i<list.length; i++){
-            this.contents.add(GameState.instance().getDungeon().getItem(list[i]));
+        if(!items.equals("Shop: ")){
+            items = items.substring("Shop: ".length());
+            String[] list = items.split(",");
+            for(int i=0; i<list.length; i++){
+                this.contents.add(GameState.instance().getDungeon().getItem(list[i]));
+            }
         }
     }
     void sellItemToPlayer(Item item){

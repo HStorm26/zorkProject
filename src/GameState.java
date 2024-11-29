@@ -91,11 +91,16 @@ public class GameState {
             if (contents.startsWith("Enemies: ")) {
                 String enemyContents = contents.substring("Enemies: ".length());
                 String[] roomEnemies = enemyContents.split(",");
+                this.getDungeon().getRoom(next).getAllEnemies().clear();
                 for (int i = 0; i < roomEnemies.length; i++) {
                     if (roomEnemies[i].isEmpty()) {
                         break;
                     }
-                    this.addEnemyToRoom(this.getDungeon().getEnemy(roomEnemies[i]), this.getDungeon().getRoom(next));
+                    Enemy e = this.getDungeon().getEnemy(roomEnemies[i].substring(
+                        0, roomEnemies[i].indexOf("(")));
+                    this.addEnemyToRoom(e,this.getDungeon().getRoom(next));
+                    e.setHealth(Integer.parseInt(roomEnemies[i].substring(
+                        roomEnemies[i].indexOf("(")+1, roomEnemies[i].indexOf(")"))));
                 }
                 contents = s.nextLine(); // throw away "---" OR move to shop contents
             }
@@ -168,7 +173,7 @@ public class GameState {
             Iterator<Enemy> enemyIterator = visitedRoom.getAllEnemies().iterator();
             while (enemyIterator.hasNext()) {
                 Enemy e = enemyIterator.next();
-                w.print(e.getName());
+                w.print(e.getName() + "(" + e.getHealth() + ")");
                 if (enemyIterator.hasNext()) {
                     w.print(",");
                 }
