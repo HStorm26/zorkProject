@@ -18,6 +18,7 @@ sword
 examine:yup, still here.
 swing[Wound(5)]:You flail wildly and end up dropping the sword on your foot.
 ---
+sword stats:
 Damage=5
 Hit Chance=.5
 Crit Chance=.5

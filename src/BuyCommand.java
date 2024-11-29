@@ -26,7 +26,7 @@ class BuyCommand extends Command{
             }
             else{
                 GameState.instance().getAdventurersCurrentRoom().getShop().sellItemToPlayer(item);
-                return "The shopkeeper takes your money and gladly hands over the " + itemName + ".\n";
+                return "The shopkeeper takes your money and gladly hands over the " + item.getPrimaryName() + ".\n";
             }
         }catch(Exception e){
             return "There's no shop here to buy anything from.\n";
