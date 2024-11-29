@@ -28,7 +28,6 @@ public class Interpreter {
                 System.err.println(USAGE_MSG);
                 System.exit(2);
             }
-
             // Use describeOnEntry() to display the initial room description
             System.out.print("\n" +
                 GameState.instance().getAdventurersCurrentRoom().describeOnEntry() +
@@ -40,7 +39,26 @@ public class Interpreter {
 
                 System.out.print(
                     CommandFactory.instance().parse(command).execute());
-
+                while(GameState.instance().combatUpdate()){
+                //for when the player gets into a fight
+                    command = promptUser(commandLine);
+                    if(command.equals("q")){
+                        break;
+                    }
+                    else if(command.startsWith("save")){
+                        System.out.println("You can't save during a fight!");
+                    }
+                    else{
+                        System.out.print(
+                            CommandFactory.instance().parse(command).execute());
+                        for(Enemy enemy : GameState.instance().getAdventurersCurrentRoom().getAllEnemies()){
+                            System.out.println(enemy.attack());
+                        }
+                    }
+                    if(GameState.instance().checkIfDead()){
+                        break;
+                    }
+                }
                 if(GameState.instance().checkIfDead()){
                     System.out.println("Everything goes dark, and you die.");
                     break;
@@ -49,7 +67,9 @@ public class Interpreter {
                     System.out.println("You won! " + CommandFactory.instance().parse("score").execute() + "Great job!");
                     break;
                 }
-                command = promptUser(commandLine);
+                if(!command.equals("q")){
+                    command = promptUser(commandLine);
+                }
             }
             if(command.equals("q")){
                 System.out.println("Bye!");

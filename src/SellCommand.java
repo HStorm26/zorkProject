@@ -17,6 +17,9 @@ class SellCommand extends Command{
         }catch(Exception e){
             return "There's nobody here for you to sell your items to.\n";
         }
+        if(GameState.instance().combatUpdate()){
+            return "The shopkeeper is nowhere to be found!\n";
+        }
         try{
             item = GameState.instance().getItemFromInventoryNamed(itemName);
         }catch(Exception e){

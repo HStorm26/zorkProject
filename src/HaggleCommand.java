@@ -5,6 +5,9 @@ class HaggleCommand extends Command{
         int result;
         try{
             shop = GameState.instance().getAdventurersCurrentRoom().getShop();
+            if(GameState.instance().combatUpdate()){
+                return "The shopkeeper is nowhere to be found!\n";
+            }
             result = shop.agreeToLowerPrice();
             switch(result){
                 case 0:

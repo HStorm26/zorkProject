@@ -83,6 +83,9 @@ public class Room {
             description += this.shop.describe();
         }
         if (!this.enemies.isEmpty()){
+            if(this.shop != null){
+                description += "\n";
+            }
             description += "\nLook out! There are enemies here!";
             for (Enemy e : this.enemies) {
                 description += "\nThere is a " + e + " here!";
@@ -102,7 +105,13 @@ public class Room {
         for (Item item : items) {
             description += "\nThere is a " + item + " here.";
         }
+        if (this.shop != null){
+            description += this.shop.describe();
+        }
         if (!this.enemies.isEmpty()){
+            if(this.shop != null){
+                description += "\n";
+            }
             description += "\nLook out! There are enemies here!";
             for (Enemy e : this.enemies) {
                 description += "\nThere is a " + e + " here!";

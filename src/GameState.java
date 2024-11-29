@@ -20,9 +20,10 @@ public class GameState {
     private static GameState theInstance;
     private Dungeon dungeon;
     private Room adventurersCurrentRoom;
+    private Room previousRoom;
     private HashSet<Room> visitedRooms;
     private int score, health, money;
-    private boolean hasWon;
+    private boolean hasWon, inCombat;
     private Random randomNumber;
     private ArrayList<Item> inventory;
     private Hashtable<Room, HashSet<Item>> roomContents;
@@ -45,7 +46,9 @@ public class GameState {
         this.money = 0;
         this.health = 100;
         this.hasWon = false;
+        this.inCombat = false;
         this.activeWeapon = null;
+        this.previousRoom = null;
     }
 
     void restore(String filename) throws NoEnemyException, FileNotFoundException, IllegalSaveFormatException, Dungeon.IllegalDungeonFormatException {
@@ -224,7 +227,12 @@ public class GameState {
     }
 
     void setAdventurersCurrentRoom(Room room) {
+        this.previousRoom = adventurersCurrentRoom;
         adventurersCurrentRoom = room;
+    }
+
+    Room getPreviousRoom() {
+        return this.previousRoom;
     }
 
     Dungeon getDungeon() {
@@ -390,5 +398,13 @@ public class GameState {
     void setActiveWeapon(Weapon w) {
         this.activeWeapon = w;
     }
-
+    boolean combatUpdate(){
+        if(this.adventurersCurrentRoom.getAllEnemies().isEmpty()){
+            this.inCombat = false;
+        }
+        else{
+            this.inCombat = true;
+        }
+        return inCombat;
+    }
 }

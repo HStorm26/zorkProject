@@ -87,9 +87,6 @@ public class Shop {
         this.isHaggled = true;
         //you can't haggle a store more than once.
         double attempt = GameState.instance().getRandom();
-        //chances should be understood in dungeon files as "the chance this will fail."
-        //example: "0.01" is "1% for haggle to fail." and "0.75" as "25% chance for haggle to work."
-        //im doing it like this because of how random doubles are generated in java.
         if(attempt < this.haggleChance){
            return 1;
         }

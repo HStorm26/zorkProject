@@ -65,6 +65,8 @@ public class CommandFactory {
             case "equip":
             case "unequip":
                 return new EquipCommand(c, checkForArgs(commands));
+            case "flee":
+                return new FleeCommand();
             default:
                 if (!checkForArgs(commands).equals("")) {
                     return new ItemSpecificCommand(c, checkForArgs(commands));

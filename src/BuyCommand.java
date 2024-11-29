@@ -12,6 +12,9 @@ class BuyCommand extends Command{
         }
         try{
             Item item = GameState.instance().getAdventurersCurrentRoom().getShop().getItem(itemName);
+            if(GameState.instance().combatUpdate()){
+                return "The shopkeeper is nowhere to be found!\n";
+            }
             if(item == null){
                 return "The shopkeeper shakes their head. They don't have that item for sale.\n";
             }
