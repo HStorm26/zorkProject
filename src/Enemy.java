@@ -2,7 +2,7 @@
 import java.util.Scanner;
 public class Enemy{
     private String name,attackMessage,deathMessage,missMessage;
-    private int health,maxHealth,strength,deathMoney;
+    private int health,maxHealth,strength,deathMoney,points;
     private double accuracy;
 
     
@@ -29,6 +29,8 @@ public class Enemy{
                 else{
                     this.deathMoney = 0;
                 }
+                this.points=Integer.parseInt(next.substring("points: ".length()));
+                next = s.nextLine();
                 this.attackMessage = next.substring("hit: ".length());
                 next = s.nextLine();
                 this.missMessage = next.substring(("miss: ".length()));
@@ -78,7 +80,12 @@ public class Enemy{
                 e.printStackTrace();
             }
             GameState.instance().addMoney(this.deathMoney);
-            return this.deathMessage + "\n";
+            GameState.instance().addScore(this.points);
+            String msg = this.deathMessage + "\n";
+            msg += ("the " + this + " dropped " + this.deathMoney + " " + 
+                GameState.instance().getDungeon().getCurrencyName() + ".\nYou gained "
+                + this.points + " points!\n");
+            return msg;
         }
         else{
             return "";
