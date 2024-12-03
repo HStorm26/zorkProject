@@ -1,0 +1,32 @@
+The Haunted IKEA
+Zork++
+===
+Currency Name: Krona
+===
+Items:
+meatball
+3
+1
+eat[Wound(-3),Disappear]:You scarf down the meatball and feel a little better.
+smell:The Swedish meatball has a uniquely appetizing aroma.
+---
+door
+40
+0
+look:You see freedom just through these sliding doors.
+open[Win]:You pull open the door and run as fast as you can away from the Haunted IKEA.
+---
+===
+Weapons:
+lamp
+10
+20
+light:The lamp isn't plugged in.
+examine:It's a table lamp. The tag on it says "Lauters."
+---
+lamp stats:
+Damage=4
+Hit Chance=.75
+Crit Chance=.15
+---
+===
