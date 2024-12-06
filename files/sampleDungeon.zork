@@ -13,8 +13,21 @@ smell:The Swedish meatball has a uniquely appetizing aroma.
 door
 40
 0
-look:You see freedom just through these sliding doors.
+examine:You see freedom just through these sliding doors.
 open[Win]:You pull open the door and run as fast as you can away from the Haunted IKEA.
+---
+chocolateBar,chocolate,bar
+2
+100
+eat[Wound(-1),Disappear]:This is some pretty good stuff!
+read:It's called a "choklad ljus."
+examine:It's a chocoloate bar, in surprisingly pristine condition given the circumstances.
+---
+proteinBar
+2
+100
+examine:a bar loaded with nutrients. It says it's birthday cake flavor. That seems a bit ironic.
+eat[Wound(-100),Disappear]:The bar tastes kind of dry, but it does make you feel a lot better.
 ---
 ===
 Weapons:
@@ -28,5 +41,196 @@ lamp stats:
 Damage=4
 Hit Chance=.75
 Crit Chance=.15
+---
+barStool,stool
+15
+35
+examine:a plastic, folding bar stool. It's got enough heft to hurt. This one's called a "Franklin."
+fold:you fold the chair, making it a little more ergonomic to fight with.
+---
+barStool stats:
+Damage=10
+Hit Chance=.85
+Crit Chance=.2
+---
+fryingPan,pan
+10
+5
+examine:it's a reasonably small frying pan. Inspecting the label reveals it's called a "Tagghaj."
+swing:As you swing, you realize this could be a pretty effective weapon.
+---
+fryingPan stats:
+Damage=5
+Hit Chance=.9
+Crit Chance=.05
+---
+kitchenKnife,knife
+8
+0
+examine:This knife is probably the most effective thing you've come across. The tag hanging from it says "Vardagen."
+---
+kitchenKnife stats:
+Damage=15
+Hit Chance=.95
+Crit Chance=.5
+---
+===
+Enemies:
+furnitureGolem
+hp: 55
+strength: 15
+accuracy: .9
+money: 300
+points: 50
+hit: The golem slams its chair shaped fist down, creating a shockwave that launches you a few feet back.
+miss: You dive away from the golem's swing, feeling the rush of air as it grazes past your head.
+die: With cushions torn apart by your attacks and stuffing littering the ground, the golem collapses into a pile of furniture.
+---
+throwPillowGhost
+hp: 10
+strength: 2
+accuracy: .45
+money: 50
+points: 5
+hit: The ghost throws a pillow at your head, bonking you and leaving you a bit disoriented.
+miss: The ghost hurls a pillow at you, but it veers off course.
+die: as the ghost becomes corporeal to grab another pillow, you whack it on the head. It makes a screeching noise and disappears.
+---
+toiletMimic
+hp: 30
+strength: 10
+accuracy: .6
+money: 75
+points: 15
+hit: The mimic grabs your arm between the bowl and the lid and clamps down, hard.
+miss: The mimic lunges at you to take a bite, but you deliver a swift kick that stuns it for a moment.
+die: The toilet seems to liquefy and become a sludge as the mimic stops being able to maintain a rigid form.
+---
+deskChair
+hp: 20
+strength: 15
+accuracy: .25
+money: 100
+points: 15
+hit: You don't notice the desk chair building up speed as it careens into you, knocking you over.
+miss: You see the chair charging towards you, but you sidestep it long before it reaches you.
+die: You kick over the tattered chair, sending it tumbling. Its wheels spin for a couple seconds before it gives up.
+---
+pottedGhoul
+hp: 16
+strength: 4
+accuracy: .5
+money: 80
+points: 15
+hit: the ghoul dashes over and smacks you with the frying pan it's found.
+miss: the ghoul swings at you, but you duck under its attack.
+die: you smash the pot on the ghouls head with your weapon, causing it to collapse.
+---
+===
+Rooms:
+Food Court
+Contents: meatball
+You wake up with a start and find yourself lost in a large IKEA. You don't remember how you got here, but you can hear the shouts of other patrons falling silent.
+You quickly realize that you need to find the exit door and escape!
+---
+Kitchen
+Shop: proteinBar
+You hop over the counter at the food court and find a fellow patron huddling in the corner. He tells you if you can clear out some of the monsters, he'll give you something to help you out.
+---
+Merchandise Floor
+You can see the exit in the distance, but it's blocked by a large creature you can't make out just yet. Creatures roam the floor. You might want to avoid being in the open this long.
+---
+Lighting Section
+Contents: lamp
+Most of the lighting fixtures on display are out, giving an eerie feeling to a usually bright location. You look around quickly and find that there are no monsters to be found here.
+---
+Kitchen Displays
+Contents: fryingPan
+Enemies: pottedGhoul
+You move into the kitchen displays. Fake houses that stop just past their fridges and their sinks. A knife block in one of the displays is missing a chef's knife.
+---
+Chairs and Sofas
+Shop: 1,barStool,chocolateBar
+Enemies: throwPillowGhost
+You find yourself in a section filled with different seating items. A patron is standing completely still, hoping that no monsters spot them.
+---
+Checkout
+Enemies: toiletMimic,deskChair
+Another patron lies on the floor near the checkout aisles. They're not looking too good.
+---
+Cart Storage
+Contents: kitchenKnife
+Enemies: furnitureGolem
+You reach the entryway where all the carts line up, waiting to be obtained by customers. In between you and the exit is one final foe.
+---
+Exit
+Contents: door
+Stumbling over the monster, you see the exits in front of you, ready to slide open and grant you freedom.
+---
+===
+Exits:
+Food Court
+u
+Kitchen
+---
+Kitchen
+u
+Food Court
+---
+Food Court
+n
+Merchandise Floor
+---
+Merchandise Floor
+s
+Food Court
+---
+Merchandise Floor
+n
+Checkout
+---
+Checkout
+s
+Merchandise Floor
+---
+Merchandise Floor
+w
+Lighting Section
+---
+Lighting Section
+e
+Merchandise Floor
+---
+Merchandise Floor
+e
+Chairs and Sofas
+---
+Chairs and Sofas
+w
+Merchandise Floor
+---
+Lighting Section
+n
+Kitchen Displays
+---
+Kitchen Displays
+s
+Lighting Section
+---
+Checkout
+n
+Cart Storage
+---
+Cart Storage
+s
+Checkout
+---
+Cart Storage
+n
+Exit
+---
+Exit
+s
+Cart Storage
 ---
 ===

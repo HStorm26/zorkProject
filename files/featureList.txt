@@ -1,0 +1,51 @@
+Weapons and Combat -- there are a plethora of enemies haunting this fetid IKEA, and you must defeat at least
+a few to escape. The player is unfortunately not skilled in hand-to-hand combat, and must find items
+that will prove useful in defeating enemies. Weapons may appear unassuming at first, but using the "equip"
+command followed by specifying an item in the player's inventory will allow you to equip these special items.
+Weapons have damage, hit chance, and crit chance stats. Enemies also have their own damage and accuracy
+stats, as long as health being consistent between saves, rewards for the player defeating them, and
+passively healing when the player isn't actively in combat, discouraging cheesing the fights by entering,
+getting a hit in, and fleeing to recuperate.
+
+You can test Weapons on their own by grabbing the meatball in the Food Court (the starting room) and going
+to the Lighting Section (n,e from start) and grabbing the lamp item. You can see before taking the lamp
+that it displays a stat line. entering "equip lamp" will print a message letting you know you have succeeded.
+Alternatively, entering "equip meatball" will give a negative response. You can check your equipped weapon
+at any time by checking your inventory. To test combat, since you already have a weapon equipped, you can go
+east twice to the chairs and sofas section of the store to find the throwPillowGhost. After dodging a few
+thrown pillows and using your improvised weapon, you will successfully send the ghost packing back to
+wherever it came from. After that taste of combat, you can head over to the Kitchen Displays and duel
+the the pottedGhoul in the same manner. The toiletMimic and deskChair will similarly fall when you come
+across them, provided you equipped the barStool that you bought from the shop (more on that later...)
+You will soon make it to the giant, monstrous furnitureGolem, and if you followed the walkthrough,
+you will find that the injuries you sustained and the damage this monster does is too great, and you will
+need to use the "flee" command to escape the golem before it defeats you, but you will manage to get
+a good whack in with your bar stool. Running back to the Kitchen (s,s,s,u) you can buy the proteinBar and
+will be able to use it to fully heal yourself in the fight. As you charge back into the fight with the
+golem, you attack the furnitureGolem twice and deal 45 damage. That, on top with your previous attack with
+the barStool, should've defeated the golem, since it only has 55 hp, but because you fled, the golem was 
+able to heal itself back to full health. However, the knife will only need one more slash at the golem to
+bring it down, clearing the way and providing a chance to escape.
+-------------------------------------------------------------------------------------------------------------
+Shops -- there are two other patrons scattered throughout the IKEA that are hiding from the monsters, and
+they've got a couple items that you can use to help you on your journey. Dungeon creators can choose what
+items are available at shops and can set their price. Enemies can also drop money if there are shops in the
+dungeon. Shop availability is dependent on what room you're in, and different rooms can have different shop
+inventories. The player can also buy and sell items, but this is only recommended if you're not interested 
+in getting that item back, as you can only sell an item for half the price you bought it for. Some items are
+deemed key and necessary for progression, and will not be able to be sold. The player can also try to haggle
+shopkeepers in order to get them to lower their prices, but some shops will not be interested in cutting you
+any slack. Shops are also unavailable if there are enemies present, as the shopkeeper will be hiding from
+the monsters until you defeat them.
+
+the man hiding under the Kitchen counter has a proteinBar, but you will find you don't have enough Swedish
+Krona to afford it. You have to defeat some monsters to get the money required. You can check how much money
+you have at any time by checking your inventory. You'll need to defeat some enemies to acquire the
+necessary cash. After defeating the first two enemies, you'll have enough money to go to the Chairs and Sofas
+section and buy yourself a more powerful weapon, the barStool. You can also sell the lamp and the fryingPan
+for some extra cash, as you won't be needing these weaker weapons anymore. After grabbing the kitchenKnife
+and fleeing the golem, you may be tempted to sell it, as you may have grown attached to the barStool, but
+it's the only weapon (probably) capable of defeating the golem, so your attempt to sell it will be blocked.
+Additionally, after defeating the golem, you can return to the Chairs and Sofas section to reward yourself
+with a sweet treat. However, the person hiding here is demanding entirely too much for his chocolate bar,
+so you can use the haggle command to get him to consider a more reasonable price.

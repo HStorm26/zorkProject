@@ -1,0 +1,63 @@
+Haunted IKEA dungeon walkthrough
+(you don't have to follow this to the letter, but when in combat, take care to not do any additional actions, as you might find yourself taking more damage or missing more attacks because of it!)
+take meatball
+n
+w
+take lamp
+equip lamp
+e
+e
+attack throwPillowGhost x4
+w
+w
+n
+attack pottedGhoul x4
+take fryingPan
+equip pan
+eat meatball
+n
+s
+e
+s
+u
+sell lamp
+u
+n
+e
+buy barStool
+equip stool
+w
+n
+attack toiletMimic x4
+attack deskChair x2
+n
+attack furnitureGolem
+take kitchenKnife
+health
+flee
+health
+s
+s
+u
+sell kitchenKnife
+buy proteinBar
+equip knife
+sell stool
+u
+n
+n
+n
+attack furnitureGolem
+eat proteinBar
+attack furnitureGolem x2
+s
+s
+e
+haggle
+buy chocolateBar
+eat chocolate
+w
+n
+n
+n
+open door
