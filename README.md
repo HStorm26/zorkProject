@@ -6,4 +6,7 @@ It was also a collaborative effort, and the project taught me a lot about workin
 Overall, I'm very proud of the work I've done on this project. Feel free to download the project and poke around it!
 ## Additionally, it's still fully playable! Here are the instructions to get it running:
 1. download the project and enter ./src
-2. compile the java files, then run "Interpreter ../files/sampleDungeon.zork"
+2. run this code 
+   ```javac *.java```
+   ```java ../files/sampleDungeon.zork```
+   
